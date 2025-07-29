@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -27,6 +28,9 @@ public class User {
     private String mobile;
     private int experience;
     private boolean active;
+
+    @OneToMany(mappedBy = "goals", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Goal> goals;
 
     @JoinColumn(name = "created_at")
     private Calendar createdAt;
