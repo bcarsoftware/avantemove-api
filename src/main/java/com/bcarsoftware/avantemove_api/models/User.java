@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.Instant;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -20,7 +20,7 @@ public class User {
     @JoinColumn(name = "last_name")
     private String lastName;
     @JoinColumn(name = "birth_date")
-    private Date birthDate;
+    private LocalDate birthDate;
 
     private String gender; // TODO: EnumGender
     private String username;
