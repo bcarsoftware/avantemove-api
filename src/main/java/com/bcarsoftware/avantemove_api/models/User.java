@@ -1,5 +1,6 @@
 package com.bcarsoftware.avantemove_api.models;
 
+import com.bcarsoftware.avantemove_api.enums.EnumGender;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -22,7 +23,7 @@ public class User {
     @JoinColumn(name = "birth_date")
     private LocalDate birthDate;
 
-    private String gender; // TODO: EnumGender
+    private EnumGender gender;
     private String username;
     private String email;
     private String password;
