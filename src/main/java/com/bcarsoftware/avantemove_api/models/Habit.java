@@ -1,5 +1,6 @@
 package com.bcarsoftware.avantemove_api.models;
 
+import com.bcarsoftware.avantemove_api.enums.EnumWeek;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -26,7 +27,7 @@ public class Habit {
     private String category;
 
     @Column(name = "days_week")
-    private List<Integer> daysWeek;
+    private List<EnumWeek> daysWeek;
 
     private boolean active;
 

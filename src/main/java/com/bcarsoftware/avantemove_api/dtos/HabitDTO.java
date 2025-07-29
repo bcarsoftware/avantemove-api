@@ -1,5 +1,7 @@
 package com.bcarsoftware.avantemove_api.dtos;
 
+import com.bcarsoftware.avantemove_api.enums.EnumWeek;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -8,7 +10,7 @@ public record HabitDTO(
         Optional<Long> goalId,
         String name,
         String category,
-        List<Integer> daysWeek,
+        List<EnumWeek> daysWeek,
         boolean active
 ) {
 }
