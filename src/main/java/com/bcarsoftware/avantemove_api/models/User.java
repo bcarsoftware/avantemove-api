@@ -9,6 +9,7 @@ import java.util.List;
 
 @Data
 @Entity
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +32,9 @@ public class User {
 
     @OneToMany(mappedBy = "goals", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Goal> goals;
+
+    @OneToMany(mappedBy = "habits", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Habit> habits;
 
     @JoinColumn(name = "created_at")
     private Calendar createdAt;

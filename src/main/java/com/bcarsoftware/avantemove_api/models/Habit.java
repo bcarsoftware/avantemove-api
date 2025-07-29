@@ -4,13 +4,12 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 @Data
 @Entity
-@Table(name = "goals")
-public class Goal {
+@Table(name = "habits")
+public class Habit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,18 +18,17 @@ public class Goal {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private String name;
-    private String description;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "goal_id")
+    private Goal goal;
 
-    @JoinColumn(name = "start_date")
-    private Date startDate;
-    @JoinColumn(name = "finish_date")
-    private Date finishDate;
+    private String name;
+    private String category;
+    
+    @JoinColumn(name = "days_week")
+    private List<Integer> daysWeek;
 
     private boolean active;
-
-    @OneToMany(mappedBy = "habits", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Habit> habits;
 
     @JoinColumn(name = "created_at")
     private Calendar createdAt;
