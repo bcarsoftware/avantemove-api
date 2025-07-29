@@ -8,8 +8,8 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "habits")
-public class Habit {
+@Table(name = "categories")
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,17 +18,7 @@ public class Habit {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "goal_id")
-    private Goal goal;
-
-    private String name;
-    private String category;
-
-    @JoinColumn(name = "days_week")
-    private List<Integer> daysWeek;
-
-    private boolean active;
+    private List<String> categories;
 
     @JoinColumn(name = "created_at")
     private Calendar createdAt;

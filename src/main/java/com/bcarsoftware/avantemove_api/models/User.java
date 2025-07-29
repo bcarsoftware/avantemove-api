@@ -36,6 +36,9 @@ public class User {
     @OneToMany(mappedBy = "habits", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Habit> habits;
 
+    @OneToMany(mappedBy = "categories")
+    private List<Category> categories;
+
     @JoinColumn(name = "created_at")
     private Calendar createdAt;
     @JoinColumn(name = "updated_at")
