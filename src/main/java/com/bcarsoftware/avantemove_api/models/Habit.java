@@ -3,7 +3,7 @@ package com.bcarsoftware.avantemove_api.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Calendar;
+import java.time.Instant;
 import java.util.List;
 
 @Data
@@ -15,7 +15,7 @@ public class Habit {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -25,7 +25,7 @@ public class Habit {
     private String name;
     private String category;
 
-    @JoinColumn(name = "days_week")
+    @Column(name = "days_week")
     private List<Integer> daysWeek;
 
     private boolean active;
@@ -33,8 +33,14 @@ public class Habit {
     @OneToMany(mappedBy = "tasks",  cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks;
 
-    @JoinColumn(name = "created_at")
-    private Calendar createdAt;
-    @JoinColumn(name = "updated_at")
-    private Calendar updatedAt;
+    @Column(name = "created_at")
+    private Instant createdAt;
+    @Column(name = "updated_at")
+    private Instant updatedAt;
+
+    @PrePersist
+    protected void onCreate() {this.createdAt = Instant.now(); this.updatedAt = Instant.now();}
+
+    @PreUpdate
+    protected void onUpdate() {this.updatedAt = Instant.now();}
 }

@@ -3,7 +3,7 @@ package com.bcarsoftware.avantemove_api.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Calendar;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class User {
     private String email;
     private String password;
     private String mobile;
-    private int experience;
+    private int experience = 10;
     private boolean active;
 
     @OneToMany(mappedBy = "goals", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -42,8 +42,14 @@ public class User {
     @OneToMany(mappedBy = "principles", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Belief> beliefs;
 
-    @JoinColumn(name = "created_at")
-    private Calendar createdAt;
-    @JoinColumn(name = "updated_at")
-    private Calendar updatedAt;
+    @Column(name = "created_at")
+    private Instant createdAt;
+    @Column(name = "updated_at")
+    private Instant updatedAt;
+
+    @PrePersist
+    protected void onCreate() {this.createdAt = Instant.now(); this.updatedAt = Instant.now();}
+
+    @PreUpdate
+    protected void onUpdate() {this.updatedAt = Instant.now();}
 }

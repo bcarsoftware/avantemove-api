@@ -3,7 +3,7 @@ package com.bcarsoftware.avantemove_api.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Calendar;
+import java.time.Instant;
 
 @Data
 @Entity
@@ -19,8 +19,14 @@ public class Task {
     private String comment;
     private boolean finished;
 
-    @JoinColumn(name = "created_at")
-    private Calendar createdAt;
-    @JoinColumn(name = "updated_at")
-    private Calendar updatedAt;
+    @Column(name = "created_at")
+    private Instant createdAt;
+    @Column(name = "updated_at")
+    private Instant updatedAt;
+
+    @PrePersist
+    protected void onCreate() {this.createdAt = Instant.now(); this.updatedAt = Instant.now();}
+
+    @PreUpdate
+    protected void onUpdate() {this.updatedAt = Instant.now();}
 }
