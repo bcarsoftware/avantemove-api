@@ -36,8 +36,11 @@ public class User {
     @OneToMany(mappedBy = "habits", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Habit> habits;
 
-    @OneToMany(mappedBy = "categories")
+    @OneToMany(mappedBy = "categories", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Category> categories;
+
+    @OneToMany(mappedBy = "principles", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Belief> beliefs;
 
     @JoinColumn(name = "created_at")
     private Calendar createdAt;
