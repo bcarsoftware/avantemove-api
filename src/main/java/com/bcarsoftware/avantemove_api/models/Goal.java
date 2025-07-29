@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.Instant;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -23,9 +23,9 @@ public class Goal {
     private String description;
 
     @Column(name = "start_date")
-    private Date startDate;
+    private LocalDate startDate;
     @Column(name = "finish_date")
-    private Date finishDate;
+    private LocalDate finishDate;
 
     private boolean active;
 
