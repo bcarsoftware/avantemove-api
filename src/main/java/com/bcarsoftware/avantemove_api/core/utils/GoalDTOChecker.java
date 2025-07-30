@@ -15,6 +15,9 @@ public class GoalDTOChecker {
 
         if (!goalDTO.description().matches(regex.get("description")))
             throw new BodyException("goal description characters not match");
+
+        if (goalDTO.finishDate().isBefore(goalDTO.startDate()))
+            throw new BodyException("finish date can't be before start date");
     }
 
     private static Map<String, String> regexes() {
