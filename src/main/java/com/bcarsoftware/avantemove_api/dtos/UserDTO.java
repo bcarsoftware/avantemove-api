@@ -1,6 +1,5 @@
 package com.bcarsoftware.avantemove_api.dtos;
 
-import com.bcarsoftware.avantemove_api.core.utils.UserDTOChecker;
 import com.bcarsoftware.avantemove_api.enums.EnumGender;
 
 import java.time.LocalDate;
@@ -17,8 +16,4 @@ public record UserDTO(
         Optional<String> mobile,
         int experience,
         boolean active
-) {
-    public UserDTO {
-        UserDTOChecker.userDTOChecker(this);
-    }
-}
+) { }
