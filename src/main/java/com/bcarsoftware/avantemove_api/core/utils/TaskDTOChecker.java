@@ -9,7 +9,7 @@ public class TaskDTOChecker {
     public static void taskDTOChecker(TaskDTO taskDTO) {
         var failed = List.of(
             !taskDTO.comment().matches("^[a-zA-Z_0-9][a-zA-Z-_ ,.0-9]{1,510}[a-zA-Z.0-9]$"),
-            taskDTO.comment().matches(" {2,}")
+            taskDTO.comment().contains("  ")
         );
 
         if (failed.contains(true))
