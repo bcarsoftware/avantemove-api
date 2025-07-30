@@ -1,5 +1,6 @@
 package com.bcarsoftware.avantemove_api.dtos;
 
+import com.bcarsoftware.avantemove_api.core.utils.HabitDTOChecker;
 import com.bcarsoftware.avantemove_api.enums.EnumWeek;
 
 import java.util.List;
@@ -13,4 +14,7 @@ public record HabitDTO(
         List<EnumWeek> daysWeek,
         boolean active
 ) {
+    public HabitDTO {
+        HabitDTOChecker.habitDTOChecker(this);
+    }
 }
