@@ -28,7 +28,7 @@ public class UserDTOChecker {
         if (!userDTO.password().matches(regex.get("password")))
             throw new BodyException("password characters not match");
 
-        if (userDTO.mobile().isPresent() && userDTO.mobile().get().matches(regex.get("mobile")))
+        if (userDTO.mobile().isPresent() && !userDTO.mobile().get().matches(regex.get("mobile")))
             throw new BodyException("mobile characters not match");
 
         if (userDTO.experience() < 0)
@@ -53,6 +53,8 @@ public class UserDTOChecker {
         regex.put("description",
             "^[a-zA-Z_0-9][a-zA-Z-_ ,.0-9]{1,510}[a-zA-Z.0-9]$"
         );
+
+        regex.put("password", "^[\\S+]{8,32}$");
 
         return regex;
     }
