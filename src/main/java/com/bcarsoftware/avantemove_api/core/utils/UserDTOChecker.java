@@ -17,7 +17,7 @@ public class UserDTOChecker {
             throw new BodyException("last name characters not match");
 
         if (!List.of(EnumGender.values()).contains(userDTO.gender()))
-            throw new BodyException("gender value not match");
+            throw new BodyException("invalid value for gender");
 
         if (!userDTO.username().matches(regex.get("username")))
             throw new BodyException("username characters not match");
