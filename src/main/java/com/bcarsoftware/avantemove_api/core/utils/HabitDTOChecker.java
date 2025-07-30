@@ -21,12 +21,12 @@ public class HabitDTOChecker {
 
         var nameChecker = List.of(
             habitDTO.name().matches(regex.get("name")),
-            !habitDTO.name().matches(regex.get("followingSpaces"))
+            !habitDTO.name().contains(regex.get("followingSpaces"))
         );
 
         var categoryChecker = List.of(
             habitDTO.category().matches(regex.get("category")),
-            !habitDTO.category().matches(regex.get("followingSpaces"))
+            !habitDTO.category().contains(regex.get("followingSpaces"))
         );
 
         if (nameChecker.contains(false))
@@ -41,7 +41,7 @@ public class HabitDTOChecker {
 
         regex.put("name", "^[A-Z][a-zA-Z- .]{1,62}[a-zA-Z.]$");
         regex.put("category", "^[A-Z][A-Za-z ]{1,30}[A-Za-z]$");
-        regex.put("followingSpaces", " {2,}");
+        regex.put("followingSpaces", "  ");
 
         return regex;
     }
