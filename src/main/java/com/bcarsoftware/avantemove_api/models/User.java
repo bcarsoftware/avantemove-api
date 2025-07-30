@@ -31,16 +31,16 @@ public class User {
     private int experience = 10;
     private boolean active;
 
-    @OneToMany(mappedBy = "goals", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Goal> goals;
 
-    @OneToMany(mappedBy = "habits", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Habit> habits;
 
-    @OneToMany(mappedBy = "categories", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Category> categories;
 
-    @OneToMany(mappedBy = "principles", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Belief> beliefs;
 
     @Column(name = "created_at")

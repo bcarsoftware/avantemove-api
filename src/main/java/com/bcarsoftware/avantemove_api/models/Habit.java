@@ -31,7 +31,7 @@ public class Habit {
 
     private boolean active;
 
-    @OneToMany(mappedBy = "tasks",  cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "habit",  cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Task> tasks;
 
     @Column(name = "created_at")

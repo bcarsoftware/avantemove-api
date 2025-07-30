@@ -29,7 +29,7 @@ public class Goal {
 
     private boolean active;
 
-    @OneToMany(mappedBy = "habits", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "goal", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Habit> habits;
 
     @Column(name = "created_at")
