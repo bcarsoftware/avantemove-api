@@ -39,7 +39,7 @@ public class UserDTOChecker {
         Map<String, String> regex = new HashMap<>();
 
         regex.put("email",
-                "^[a-z][a-z0-9._-]{1,254}[a-z0-9]@[a-z0-9]{1,16}(.[a-z]{2,3}){1,2}$"
+            "^[a-z][a-z0-9._-]{1,254}[a-z0-9]@[a-z0-9]{1,16}(.[a-z]{2,3}){1,2}$"
         );
 
         regex.put("username", "^[a-z][a-z-_0-9]{1,254}$");
@@ -51,7 +51,7 @@ public class UserDTOChecker {
         regex.put("lastName", "^[A-Z][a-zA-Z- .]{1,253}[a-zA-Z.]$");
 
         regex.put("description",
-                "^[a-zA-Z_0-9][a-zA-Z-_ ,.0-9]{1,510}[a-zA-Z.0-9]$"
+            "^[a-zA-Z_0-9][a-zA-Z-_ ,.0-9]{1,510}[a-zA-Z.0-9]$"
         );
 
         return regex;
