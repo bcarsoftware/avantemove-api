@@ -51,7 +51,7 @@ public class UserDTOChecker {
         regex.put("lastName", "^[A-Z][a-zA-Z- .]{1,253}[a-zA-Z.]$");
 
         regex.put("description",
-                "^[a-zA-Z_0-9][a-zA-Z-_ ,.0-9]{1,512}[a-zA-Z.0-9]$"
+                "^[a-zA-Z_0-9][a-zA-Z-_ ,.0-9]{1,510}[a-zA-Z.0-9]$"
         );
 
         return regex;

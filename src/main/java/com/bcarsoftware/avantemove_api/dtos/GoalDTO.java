@@ -1,5 +1,7 @@
 package com.bcarsoftware.avantemove_api.dtos;
 
+import com.bcarsoftware.avantemove_api.core.utils.GoalDTOChecker;
+
 import java.time.LocalDate;
 
 public record GoalDTO(
@@ -10,4 +12,7 @@ public record GoalDTO(
         LocalDate finishDate,
         boolean active
 ) {
+    public GoalDTO {
+        GoalDTOChecker.goalDTOChecker(this);
+    }
 }
