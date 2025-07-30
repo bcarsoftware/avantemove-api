@@ -54,6 +54,8 @@ public class UserDTOChecker {
             "^[a-zA-Z_0-9][a-zA-Z-_ ,.0-9]{1,510}[a-zA-Z.0-9]$"
         );
 
+        regex.put("password", "^[\\S+]{8,32}$");
+
         return regex;
     }
 }
