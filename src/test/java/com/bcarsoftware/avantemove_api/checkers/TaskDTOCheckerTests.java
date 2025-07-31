@@ -48,4 +48,12 @@ public class TaskDTOCheckerTests {
             () ->TaskDTOChecker.taskDTOChecker(TaskDTOMock.failedTaskMaxLength())
         );
     }
+
+    @Test
+    @DisplayName("failed task xp value")
+    void failedTaskXpValue() {
+        assertThrows(BodyException.class,
+            () -> TaskDTOChecker.taskDTOChecker(TaskDTOMock.failedTaskXpValue())
+        );
+    }
 }

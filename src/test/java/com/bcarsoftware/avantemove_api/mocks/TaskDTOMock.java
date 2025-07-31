@@ -7,6 +7,7 @@ public class TaskDTOMock {
         return new TaskDTO(
             1L,
             "This is a comment",
+            15L,
             false
         );
     }
@@ -15,6 +16,7 @@ public class TaskDTOMock {
         return new TaskDTO(
             1L,
             "This  is a comment",
+            15L,
             false
         );
     }
@@ -23,6 +25,7 @@ public class TaskDTOMock {
         return new TaskDTO(
             1L,
             "This# is a comment",
+            15L,
             false
         );
     }
@@ -31,6 +34,7 @@ public class TaskDTOMock {
         return new TaskDTO(
             1L,
             "Th",
+            15L,
             false
         );
     }
@@ -39,7 +43,17 @@ public class TaskDTOMock {
         return new TaskDTO(
             1L,
             "Th".repeat(257),
+            15L,
             false
+        );
+    }
+
+    public static TaskDTO failedTaskXpValue() {
+        return new TaskDTO(
+                1L,
+                "This is a comment",
+                -15L,
+                false
         );
     }
 }
