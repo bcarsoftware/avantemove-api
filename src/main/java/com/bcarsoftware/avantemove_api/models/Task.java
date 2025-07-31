@@ -19,6 +19,9 @@ public class Task {
     private String comment;
     private boolean finished;
 
+    @Column(name = "xp_value")
+    private Long xpValue;
+
     @Column(name = "created_at")
     private Instant createdAt;
     @Column(name = "updated_at")
