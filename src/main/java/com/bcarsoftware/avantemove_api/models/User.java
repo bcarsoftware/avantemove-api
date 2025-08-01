@@ -24,8 +24,12 @@ public class User {
     private LocalDate birthDate;
 
     private EnumGender gender;
+
+    @Column(unique = true)
     private String username;
+    @Column(unique = true)
     private String email;
+
     private String password;
     private String mobile;
     private int experience = 10;
