@@ -35,6 +35,13 @@ public class UserDTOChecker {
             throw new BodyException("experience cannot be negative");
     }
 
+    public static void checkPassword(String password) {
+        String regex = "^[\\S+]{8,32}$";
+
+        if (!password.matches(regex))
+            throw new BodyException("password characters not match");
+    }
+
     private static Map<String, String> regexes() {
         Map<String, String> regex = new HashMap<>();
 
