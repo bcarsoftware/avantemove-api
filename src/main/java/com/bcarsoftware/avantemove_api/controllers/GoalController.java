@@ -47,9 +47,9 @@ public class GoalController implements IGoalController {
         SuccessResponse<Goal> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.goalService.update(id, goalDTO));
-        successResponse.setCode(201);
+        successResponse.setCode(200);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(successResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(successResponse);
     }
 
     @Override
@@ -58,8 +58,8 @@ public class GoalController implements IGoalController {
         SuccessResponse<Goal> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.goalService.delete(id));
-        successResponse.setCode(201);
+        successResponse.setCode(200);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(successResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(successResponse);
     }
 }
