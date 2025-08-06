@@ -10,4 +10,6 @@ import java.util.List;
 public interface HabitRepository extends JpaRepository<Habit, Long> {
     public abstract List<Habit> findHabitByUserId(Long id);
     public abstract List<Habit> findHabitByGoalId(Long id);
+
+    public abstract Habit findFirstById(Long id);
 }
