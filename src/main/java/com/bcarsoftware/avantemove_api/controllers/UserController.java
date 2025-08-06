@@ -22,7 +22,7 @@ public class UserController implements IUserController{
         SuccessResponse<User> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.userService.save(userDTO));
-        successResponse.setCode(200);
+        successResponse.setCode(201);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(successResponse);
     }
