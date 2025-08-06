@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface IUserController {
     public abstract ResponseEntity<?> save(@RequestBody UserDTO userDTO);
     public abstract ResponseEntity<?> login(@RequestBody LoginDTO loginDTO);
-    public abstract ResponseEntity<?> logout(@RequestParam String token);
+    public abstract ResponseEntity<?> logout();
     public abstract ResponseEntity<?> getById(
-        @PathVariable("id") Integer id,
+        @PathVariable("id") Long id,
         @RequestParam String token
     );
     public abstract ResponseEntity<?> update(
-        @PathVariable("id") Integer id,
+        @PathVariable("id") Long id,
         @RequestBody UserDTO userDTO,
         @RequestParam String token
     );
@@ -25,7 +25,7 @@ public interface IUserController {
         @RequestBody RecoveryDTO recoveryDTO
     );
     public abstract ResponseEntity<?> delete(
-        @PathVariable("id") Integer id,
+        @PathVariable("id") Long id,
         @RequestParam String token
     );
 }
