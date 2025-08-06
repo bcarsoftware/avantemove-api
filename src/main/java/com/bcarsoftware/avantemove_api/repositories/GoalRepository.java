@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface GoalRepository extends JpaRepository<Goal, Long> {
     public abstract List<Goal> findGoalByUserId(Long userId);
+
+    public abstract Goal findFirstById(Long id);
 }
