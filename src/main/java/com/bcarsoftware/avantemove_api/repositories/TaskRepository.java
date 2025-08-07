@@ -15,4 +15,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     @Query("update Task as tk set tk.finished=true where tk.id=:id")
     public abstract Task finishTaskById(@Param("id") Long id);
     public abstract List<Task> findTaskByHabitId(Long habitId);
+
+    public abstract Task findFirstById(Long id);
 }
