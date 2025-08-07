@@ -8,5 +8,7 @@ import java.util.List;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-    public abstract List<Category> findCategoryByUserId(Long userId);
+    public abstract Category findFirstByUserId(Long userId);
+
+    public abstract Category findFirstById(Long id);
 }
