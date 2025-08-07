@@ -1,0 +1,116 @@
+package com.bcarsoftware.avantemove_api.services;
+
+import com.bcarsoftware.avantemove_api.core.utils.BeliefDTOChecker;
+import com.bcarsoftware.avantemove_api.dtos.BeliefDTO;
+import com.bcarsoftware.avantemove_api.exceptions.DatabaseException;
+import com.bcarsoftware.avantemove_api.models.Belief;
+import com.bcarsoftware.avantemove_api.models.User;
+import com.bcarsoftware.avantemove_api.repositories.BeliefRepository;
+import com.bcarsoftware.avantemove_api.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class BeliefService implements IBeliefService {
+    @Autowired
+    private BeliefRepository beliefRepository;
+    @Autowired
+    private UserRepository userRepository;
+
+    @Override
+    public Belief save(BeliefDTO beliefDTO) {
+        Belief belief = this.transferBeliefDtoToBelief(beliefDTO);
+
+        try {
+            return this.beliefRepository.save(belief);
+        }
+        catch (Exception e) {
+            System.err.println(e.getMessage());
+
+            throw new DatabaseException("Internal Server Error", 500);
+        }
+    }
+
+    @Override
+    public List<Belief> getBeliefByUserId(Long userId) {
+        List<Belief> beliefs = this.beliefRepository.findBeliefByUserId(userId);
+
+        if (beliefs.isEmpty())
+            throw new DatabaseException("beliefs not found", 404);
+
+        return beliefs;
+    }
+
+    @Override
+    public Belief update(Long id, BeliefDTO beliefDTO) {
+        Belief belief = this.beliefRepository.findFirstById(id);
+
+        if (belief == null)
+            throw new DatabaseException("belief not found", 404);
+
+        Belief beliefData = this.transferBeliefDtoToBelief(beliefDTO, belief);
+
+        try {
+            return this.beliefRepository.save(beliefData);
+        }
+        catch (Exception e) {
+            System.err.println(e.getMessage());
+
+            throw new DatabaseException("Internal Server Error", 500);
+        }
+    }
+
+    @Override
+    public Belief delete(Long id) {
+        Belief belief = beliefRepository.findFirstById(id);
+
+        if (belief == null)
+            throw new DatabaseException("belief not found", 404);
+
+        try {
+            this.beliefRepository.delete(belief);
+
+            return belief;
+        }
+        catch (Exception e) {
+            System.err.println(e.getMessage());
+
+            throw new DatabaseException("Internal Server Error", 500);
+        }
+    }
+
+    protected Belief transferBeliefDtoToBelief(BeliefDTO beliefDTO) {
+        BeliefDTOChecker.beliefDTOChecker(beliefDTO);
+
+        var user = this.getUser(beliefDTO.userId());
+
+        Belief belief = new Belief();
+
+        belief.setUser(user);
+        belief.setDescription(beliefDTO.description());
+
+        return belief;
+    }
+
+    protected Belief transferBeliefDtoToBelief(BeliefDTO beliefDTO, Belief belief) {
+        BeliefDTOChecker.beliefDTOChecker(beliefDTO);
+
+        var user = this.getUser(beliefDTO.userId());
+
+        belief.setUser(user);
+        belief.setDescription(beliefDTO.description());
+
+        return belief;
+    }
+
+    private User getUser(Long userId) {
+        User user = this.userRepository.findFirstById(userId);
+
+        if (user == null)
+            throw new DatabaseException("user not found", 404);
+
+        return user;
+    }
+}
