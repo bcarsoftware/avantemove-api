@@ -48,7 +48,24 @@ public class UserService implements IUserService{
                 404
             );
 
-        return user;
+        if (user.isActive()) {
+            user.setPassword(null);
+            return user;
+        }
+
+        try {
+            user.setActive(true);
+            this.userRepository.save(user);
+
+            user.setPassword(null);
+
+            return user;
+        }
+        catch (Exception e) {
+            System.err.println(e.getMessage());
+
+            throw new DatabaseException("Internal Server Error", 500);
+        }
     }
 
     /**
