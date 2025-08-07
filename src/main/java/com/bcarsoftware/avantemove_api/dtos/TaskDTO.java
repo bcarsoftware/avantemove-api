@@ -1,8 +1,11 @@
 package com.bcarsoftware.avantemove_api.dtos;
 
+import java.time.LocalDate;
+
 public record TaskDTO(
         Long habitId,
         String comment,
-        Long xpValue,
+        int xpValue,
+        LocalDate date,
         boolean finished
 ) { }

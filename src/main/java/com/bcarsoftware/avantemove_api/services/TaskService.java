@@ -1,6 +1,7 @@
 package com.bcarsoftware.avantemove_api.services;
 
 import com.bcarsoftware.avantemove_api.core.utils.TaskDTOChecker;
+import com.bcarsoftware.avantemove_api.dtos.DateIntervalDTO;
 import com.bcarsoftware.avantemove_api.dtos.TaskDTO;
 import com.bcarsoftware.avantemove_api.exceptions.DatabaseException;
 import com.bcarsoftware.avantemove_api.models.Habit;
@@ -32,7 +33,12 @@ public class TaskService implements ITaskService {
     }
 
     @Override
-    public List<Task> getTaskByHabit(Long habitId) {
+    public List<Task> getTaskByHabit(Long habitId, DateIntervalDTO dateIntervalDTO) {
+        return List.of();
+    }
+
+    @Override
+    public List<Task> getTaskHabitDetached(DateIntervalDTO dateIntervalDTO) {
         return List.of();
     }
 
@@ -101,7 +107,7 @@ public class TaskService implements ITaskService {
     private Task getTask(TaskDTO taskDTO, Task task) {
         TaskDTOChecker.taskDTOChecker(taskDTO);
 
-        var habit = this.getHabit(taskDTO.habitId());
+        var habit = taskDTO.habitId() == 0 ? null : this.getHabit(taskDTO.habitId());
 
         task.setHabit(habit);
         task.setComment(taskDTO.comment());

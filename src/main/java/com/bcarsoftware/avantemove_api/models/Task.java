@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -20,7 +21,10 @@ public class Task {
     private boolean finished;
 
     @Column(name = "xp_value")
-    private Long xpValue;
+    private int xpValue;
+
+    @Column(nullable = false)
+    private LocalDate date;
 
     @Column(name = "created_at")
     private Instant createdAt;
