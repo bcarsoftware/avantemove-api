@@ -110,7 +110,7 @@ public class SealExpService implements ISealExpService {
         List<SealExp> editSealExps = sealExps.stream().filter(seal -> seal.getId() > sealExp.getId()).toList();
 
         if (!editSealExps.isEmpty()) {
-            AtomicInteger startXp = new AtomicInteger(sealExp.getFinishXp() + 1);
+            AtomicInteger startXp = new AtomicInteger(sealExp.getStartXp());
 
             editSealExps = editSealExps.stream().peek(seal -> {
                 int interval = seal.getFinishXp() - seal.getStartXp();
