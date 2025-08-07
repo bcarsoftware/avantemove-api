@@ -82,19 +82,16 @@ public class BeliefService implements IBeliefService {
     }
 
     protected Belief transferBeliefDtoToBelief(BeliefDTO beliefDTO) {
-        BeliefDTOChecker.beliefDTOChecker(beliefDTO);
-
-        var user = this.getUser(beliefDTO.userId());
-
         Belief belief = new Belief();
 
-        belief.setUser(user);
-        belief.setDescription(beliefDTO.description());
-
-        return belief;
+        return this.getBelief(beliefDTO, belief);
     }
 
     protected Belief transferBeliefDtoToBelief(BeliefDTO beliefDTO, Belief belief) {
+        return this.getBelief(beliefDTO, belief);
+    }
+
+    private Belief getBelief(BeliefDTO beliefDTO, Belief belief) {
         BeliefDTOChecker.beliefDTOChecker(beliefDTO);
 
         var user = this.getUser(beliefDTO.userId());
