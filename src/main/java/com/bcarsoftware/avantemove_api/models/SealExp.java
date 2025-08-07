@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.Instant;
-import java.util.Calendar;
 
 @Data
 @Entity
@@ -16,9 +15,9 @@ public class SealExp {
 
     private String name;
 
-    @Column(name = "start_xp")
-    private int startXp;
-    @Column(name = "finish_xp")
+    @Column(name = "start_xp", unique = true, nullable = false)
+    private int startXp = 10;
+    @Column(name = "finish_xp", unique = true, nullable = false)
     private int finishXp;
 
     @Column(name = "created_at")

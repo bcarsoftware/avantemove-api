@@ -12,5 +12,6 @@ public interface ISealExpController {
         @PathVariable Long id,
         @RequestBody SealExpDTO sealExpDTO
     );
-    public abstract ResponseEntity<?> getSealExpByUserExperience(@PathVariable Long experience);
+    public abstract ResponseEntity<?> getSealExpByUserExperience(@PathVariable int experience);
+    public abstract ResponseEntity<?> delete(@PathVariable Long id);
 }

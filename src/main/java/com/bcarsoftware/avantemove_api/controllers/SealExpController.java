@@ -1,22 +1,41 @@
 package com.bcarsoftware.avantemove_api.controllers;
 
+import com.bcarsoftware.avantemove_api.core.responses.SuccessResponse;
 import com.bcarsoftware.avantemove_api.dtos.SealExpDTO;
+import com.bcarsoftware.avantemove_api.models.SealExp;
+import com.bcarsoftware.avantemove_api.services.ISealExpService;
+import com.bcarsoftware.avantemove_api.services.SealExpService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/seal-exp")
 public class SealExpController implements ISealExpController {
+    private final ISealExpService sealExpService = new SealExpService();
+
     @Override
     @PostMapping("")
     public ResponseEntity<?> save(@RequestBody SealExpDTO sealExpDTO) {
-        return null;
+        SuccessResponse<SealExp> successResponse = new SuccessResponse<>();
+
+        successResponse.setData(this.sealExpService.save(sealExpDTO));
+        successResponse.setCode(201);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(successResponse);
     }
 
     @Override
     @GetMapping("")
     public ResponseEntity<?> getAllSealExp() {
-        return null;
+        SuccessResponse<List<SealExp>> successResponse = new SuccessResponse<>();
+
+        successResponse.setData(this.sealExpService.getAllSealExp());
+        successResponse.setCode(200);
+
+        return ResponseEntity.status(HttpStatus.OK).body(successResponse);
     }
 
     @Override
@@ -25,12 +44,33 @@ public class SealExpController implements ISealExpController {
         @PathVariable Long id,
         @RequestBody SealExpDTO sealExpDTO
     ) {
-        return null;
+        SuccessResponse<SealExp> successResponse = new SuccessResponse<>();
+
+        successResponse.setData(this.sealExpService.update(id, sealExpDTO));
+        successResponse.setCode(200);
+
+        return ResponseEntity.status(HttpStatus.OK).body(successResponse);
     }
 
     @Override
     @GetMapping("/{experience}/user")
-    public ResponseEntity<?> getSealExpByUserExperience(@PathVariable Long experience) {
-        return null;
+    public ResponseEntity<?> getSealExpByUserExperience(@PathVariable int experience) {
+        SuccessResponse<SealExp> successResponse = new SuccessResponse<>();
+
+        successResponse.setData(this.sealExpService.getSealExpByUserExperience(experience));
+        successResponse.setCode(200);
+
+        return ResponseEntity.status(HttpStatus.OK).body(successResponse);
+    }
+
+    @Override
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        SuccessResponse<SealExp> successResponse = new SuccessResponse<>();
+
+        successResponse.setData(this.sealExpService.delete(id));
+        successResponse.setCode(200);
+
+        return ResponseEntity.status(HttpStatus.OK).body(successResponse);
     }
 }
