@@ -1,6 +1,7 @@
 package com.bcarsoftware.avantemove_api.controllers;
 
 import com.bcarsoftware.avantemove_api.dtos.CategoryDTO;
+import com.bcarsoftware.avantemove_api.dtos.DeleteCategoryDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,5 +13,8 @@ public interface ICategoryController {
         @PathVariable Long id,
         @RequestBody CategoryDTO categoryDTO
     );
-    public abstract ResponseEntity<?> delete(@PathVariable Long id);
+    public abstract ResponseEntity<?> delete(
+        @PathVariable Long id,
+        @RequestBody DeleteCategoryDTO categoryDTO
+    );
 }
