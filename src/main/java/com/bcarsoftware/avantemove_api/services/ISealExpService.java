@@ -10,4 +10,5 @@ public interface ISealExpService {
     public abstract List<SealExp> getAllSealExp();
     public abstract SealExp update(Long id, SealExpDTO sealExpDTO);
     public abstract SealExp getSealExpByUserExperience(int experience);
+    public abstract SealExp delete(Long id);
 }
