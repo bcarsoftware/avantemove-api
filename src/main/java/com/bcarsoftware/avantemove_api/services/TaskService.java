@@ -6,17 +6,25 @@ import com.bcarsoftware.avantemove_api.dtos.TaskDTO;
 import com.bcarsoftware.avantemove_api.exceptions.DatabaseException;
 import com.bcarsoftware.avantemove_api.models.Habit;
 import com.bcarsoftware.avantemove_api.models.Task;
+import com.bcarsoftware.avantemove_api.models.User;
 import com.bcarsoftware.avantemove_api.repositories.HabitRepository;
 import com.bcarsoftware.avantemove_api.repositories.TaskRepository;
+import com.bcarsoftware.avantemove_api.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class TaskService implements ITaskService {
     @Autowired
     private TaskRepository taskRepository;
     @Autowired
     private HabitRepository habitRepository;
+    @Autowired
+    private UserRepository userRepository;
+
+    private final int EXPERIENCE = 15;
 
     @Override
     public Task save(TaskDTO taskDTO) {
@@ -63,11 +71,22 @@ public class TaskService implements ITaskService {
 
     @Override
     public Task finish(Long id) {
-        if (this.taskRepository.findFirstById(id) == null)
+        Task task = this.taskRepository.findFirstById(id);
+
+        if (task == null)
             throw new DatabaseException("task not found", 404);
 
+        task.setFinished(!task.isFinished());
+
+        int experience = task.isFinished() ? this.EXPERIENCE : -this.EXPERIENCE;
+
+        User user = task.getHabit().getUser();
+
+        user.setExperience(user.getExperience() + experience);
+
         try {
-            return this.taskRepository.finishTaskById(id);
+            this.userRepository.save(user);
+            return this.taskRepository.save(task);
         }
         catch (Exception e) {
             System.err.println(e.getMessage());
@@ -83,7 +102,12 @@ public class TaskService implements ITaskService {
         if (task == null)
             throw new DatabaseException("task not found", 404);
 
+        User user = task.getHabit().getUser();
+
+        user.setExperience(user.getExperience() - this.EXPERIENCE);
+
         try {
+            this.userRepository.save(user);
             this.taskRepository.delete(task);
 
             return task;

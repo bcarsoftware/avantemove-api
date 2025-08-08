@@ -18,7 +18,9 @@ public class Task {
     private Habit habit;
 
     private String comment;
-    private boolean finished;
+
+    @Column(nullable = false)
+    private boolean finished = false;
 
     @Column(name = "xp_value")
     private int xpValue;
