@@ -11,9 +11,11 @@ import com.bcarsoftware.avantemove_api.repositories.HabitRepository;
 import com.bcarsoftware.avantemove_api.repositories.TaskRepository;
 import com.bcarsoftware.avantemove_api.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class TaskService implements ITaskService {
     @Autowired
     private TaskRepository taskRepository;
@@ -21,6 +23,8 @@ public class TaskService implements ITaskService {
     private HabitRepository habitRepository;
     @Autowired
     private UserRepository userRepository;
+
+    private final int EXPERIENCE = 15;
 
     @Override
     public Task save(TaskDTO taskDTO) {
@@ -74,7 +78,7 @@ public class TaskService implements ITaskService {
 
         task.setFinished(!task.isFinished());
 
-        int experience = task.isFinished() ? 15 : -15;
+        int experience = task.isFinished() ? this.EXPERIENCE : -this.EXPERIENCE;
 
         User user = task.getHabit().getUser();
 
@@ -98,7 +102,12 @@ public class TaskService implements ITaskService {
         if (task == null)
             throw new DatabaseException("task not found", 404);
 
+        User user = task.getHabit().getUser();
+
+        user.setExperience(user.getExperience() - this.EXPERIENCE);
+
         try {
+            this.userRepository.save(user);
             this.taskRepository.delete(task);
 
             return task;
