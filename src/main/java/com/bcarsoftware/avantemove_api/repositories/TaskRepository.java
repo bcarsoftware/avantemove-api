@@ -12,10 +12,6 @@ import java.util.List;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
-    @Modifying
-    @Query("update Task as tk set tk.finished=true where tk.id=:id")
-    public abstract Task finishTaskById(@Param("id") Long id);
-
     @Query("select t from Task as t where t.date>=:startDate and t.date<=:end and t.habit.id=:habitId")
     public abstract List<Task> findTaskByHabitId(
         @Param("habitId") Long habitId,
