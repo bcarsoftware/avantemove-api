@@ -1,7 +1,10 @@
 package com.bcarsoftware.avantemove_api.core.jwt;
 
 import com.bcarsoftware.avantemove_api.core.environ.EnvironLoader;
+import com.bcarsoftware.avantemove_api.dtos.AccessTokenDTO;
 import com.bcarsoftware.avantemove_api.exceptions.AuthException;
+import com.bcarsoftware.avantemove_api.services.AccessTokenService;
+import com.bcarsoftware.avantemove_api.services.IAccessTokenService;
 import io.jsonwebtoken.Jwts;
 
 import javax.crypto.SecretKey;
@@ -10,6 +13,7 @@ import java.util.Base64;
 import java.util.Date;
 
 public class JwtInsert {
+    private final IAccessTokenService accessTokenService = new AccessTokenService();
     private final EnvironLoader environ = new EnvironLoader();
 
     private SecretKey getSecretKey() {
@@ -20,10 +24,10 @@ public class JwtInsert {
         return new SecretKeySpec(keyBytes, environ.getAlgorithm());
     }
 
-    public String createToken(Long userId, String role) {
+    public String createToken(Long userId, String username, String role) {
         SecretKey key = this.getSecretKey();
 
-        return Jwts.builder().subject(userId.toString())
+        String token = Jwts.builder().subject(userId.toString())
                 .claim("role", role)
                 .issuer(this.environ.getAppName())
                 .issuedAt(new Date())
@@ -32,9 +36,19 @@ public class JwtInsert {
                 )
                 .signWith(key)
                 .compact();
+
+        AccessTokenDTO accessTokenDTO = new AccessTokenDTO(username, token);
+
+        this.accessTokenService.save(accessTokenDTO);
+
+        return token;
     }
 
     public void verifyToken(String token) {
+        AccessTokenDTO accessTokenDTO = new AccessTokenDTO(null, token);
+
+        this.accessTokenService.getAccessTokenByToken(accessTokenDTO);
+
         SecretKey key = this.getSecretKey();
 
         try {
@@ -46,5 +60,19 @@ public class JwtInsert {
         catch (Exception e) {
             throw new AuthException("user not authorized");
         }
+    }
+
+    public boolean deleteTokenByToken(String token) {
+        AccessTokenDTO accessTokenDTO = new AccessTokenDTO(null, token);
+
+        String result = this.accessTokenService.deleteAccessTokenByToken(accessTokenDTO);
+
+        return result != null && result.contains("deleted");
+    }
+
+    public boolean deleteAllTokensUser(String username, String email) {
+        String result = this.accessTokenService.deleteAccessTokenByUsernameOrEmail(username, email);
+
+        return result != null && result.contains("deleted");
     }
 }
