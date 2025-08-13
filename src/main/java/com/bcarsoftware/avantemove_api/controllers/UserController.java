@@ -68,6 +68,7 @@ public class UserController implements IUserController {
     }
 
     @Override
+    @PostMapping("/logout/all")
     public ResponseEntity<?> logoutAll(
         @RequestParam String username,
         @RequestParam String email,
