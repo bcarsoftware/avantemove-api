@@ -18,7 +18,10 @@ public class GoalController implements IGoalController {
 
     @Override
     @PostMapping("")
-    public ResponseEntity<?> save(@RequestBody GoalDTO goalDTO) {
+    public ResponseEntity<?> save(
+        @RequestParam String token,
+        @RequestBody GoalDTO goalDTO
+    ) {
         SuccessResponse<Goal> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.goalService.save(goalDTO));
@@ -29,7 +32,10 @@ public class GoalController implements IGoalController {
 
     @Override
     @GetMapping("/{userId}/user")
-    public ResponseEntity<?> getByUserId(@PathVariable Long userId) {
+    public ResponseEntity<?> getByUserId(
+        @RequestParam String token,
+        @PathVariable Long userId
+    ) {
         SuccessResponse<List<Goal>> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.goalService.getByUserId(userId));
@@ -41,6 +47,7 @@ public class GoalController implements IGoalController {
     @Override
     @PatchMapping("/{id}/update")
     public ResponseEntity<?> update(
+        @RequestParam String token,
         @PathVariable Long id,
         @RequestBody GoalDTO goalDTO
     ) {
@@ -54,7 +61,10 @@ public class GoalController implements IGoalController {
 
     @Override
     @DeleteMapping("/{id}/delete")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(
+        @RequestParam String token,
+        @PathVariable Long id
+    ) {
         SuccessResponse<Goal> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.goalService.delete(id));

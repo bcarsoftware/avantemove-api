@@ -19,7 +19,10 @@ public class HabitController implements IHabitController{
 
     @Override
     @PostMapping("")
-    public ResponseEntity<?> save(@RequestBody HabitDTO habitDTO) {
+    public ResponseEntity<?> save(
+        @RequestParam String token,
+        @RequestBody HabitDTO habitDTO
+    ) {
         SuccessResponse<Habit> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.habitService.save(habitDTO));
@@ -30,7 +33,10 @@ public class HabitController implements IHabitController{
 
     @Override
     @GetMapping("/{userId}/user")
-    public ResponseEntity<?> getHabitByUserId(@PathVariable Long userId) {
+    public ResponseEntity<?> getHabitByUserId(
+        @RequestParam String token,
+        @PathVariable Long userId
+    ) {
         SuccessResponse<List<Habit>> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.habitService.getHabitByUserId(userId));
@@ -41,7 +47,10 @@ public class HabitController implements IHabitController{
 
     @Override
     @GetMapping("/{goalId}/goal")
-    public ResponseEntity<?> getHabitByGoalId(@PathVariable Long goalId) {
+    public ResponseEntity<?> getHabitByGoalId(
+        @RequestParam String token,
+        @PathVariable Long goalId
+    ) {
         SuccessResponse<List<Habit>> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.habitService.getHabitByGoalId(goalId));
@@ -53,6 +62,7 @@ public class HabitController implements IHabitController{
     @Override
     @PatchMapping("/{id}/update")
     public ResponseEntity<?> update(
+        @RequestParam String token,
         @PathVariable Long id,
         @RequestBody HabitDTO habitDTO
     ) {
@@ -66,7 +76,10 @@ public class HabitController implements IHabitController{
 
     @Override
     @DeleteMapping("/{id}/delete")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(
+        @RequestParam String token,
+        @PathVariable Long id
+    ) {
         SuccessResponse<Habit> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.habitService.delete(id));
