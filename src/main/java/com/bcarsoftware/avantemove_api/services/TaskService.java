@@ -3,6 +3,7 @@ package com.bcarsoftware.avantemove_api.services;
 import com.bcarsoftware.avantemove_api.core.utils.TaskDTOChecker;
 import com.bcarsoftware.avantemove_api.dtos.DateIntervalDTO;
 import com.bcarsoftware.avantemove_api.dtos.TaskDTO;
+import com.bcarsoftware.avantemove_api.exceptions.BodyException;
 import com.bcarsoftware.avantemove_api.exceptions.DatabaseException;
 import com.bcarsoftware.avantemove_api.models.Habit;
 import com.bcarsoftware.avantemove_api.models.Task;
@@ -42,12 +43,35 @@ public class TaskService implements ITaskService {
 
     @Override
     public List<Task> getTaskByHabit(Long habitId, DateIntervalDTO dateIntervalDTO) {
-        return List.of();
+        if (dateIntervalDTO.end().isBefore(dateIntervalDTO.start()))
+            throw new BodyException("invalid date interval");
+
+        List<Task> tasks = this.taskRepository.findTaskByHabitId(
+            habitId,
+            dateIntervalDTO.start(),
+            dateIntervalDTO.end()
+        );
+
+        if (tasks.isEmpty())
+            throw new DatabaseException("tasks not found");
+
+        return tasks;
     }
 
     @Override
     public List<Task> getTaskHabitDetached(DateIntervalDTO dateIntervalDTO) {
-        return List.of();
+        if (dateIntervalDTO.end().isBefore(dateIntervalDTO.start()))
+            throw new BodyException("invalid date interval");
+
+        List<Task> tasks = this.taskRepository.findTaskDetached(
+                dateIntervalDTO.start(),
+                dateIntervalDTO.end()
+        );
+
+        if (tasks.isEmpty())
+            throw new DatabaseException("tasks not found");
+
+        return tasks;
     }
 
     @Override

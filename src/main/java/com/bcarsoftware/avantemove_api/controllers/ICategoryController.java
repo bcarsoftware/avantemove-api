@@ -8,20 +8,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public interface ICategoryController {
-    public abstract ResponseEntity<?> save(
+    ResponseEntity<?> save(
         @RequestParam String token,
         @RequestBody CategoryDTO categoryDTO
     );
-    public abstract ResponseEntity<?> getCategoryByUserId(
+    ResponseEntity<?> getCategoryByUserId(
         @RequestParam String token,
         @PathVariable Long userId
     );
-    public abstract ResponseEntity<?> update(
+    ResponseEntity<?> update(
         @RequestParam String token,
         @PathVariable Long id,
         @RequestBody CategoryDTO categoryDTO
     );
-    public abstract ResponseEntity<?> delete(
+    ResponseEntity<?> delete(
         @RequestParam String token,
         @PathVariable Long id,
         @RequestBody DeleteCategoryDTO categoryDTO

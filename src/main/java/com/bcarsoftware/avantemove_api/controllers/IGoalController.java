@@ -7,20 +7,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public interface IGoalController {
-    public abstract ResponseEntity<?> save(
+    ResponseEntity<?> save(
         @RequestParam String token,
         @RequestBody GoalDTO goalDTO
     );
-    public abstract ResponseEntity<?> getByUserId(
+    ResponseEntity<?> getByUserId(
         @RequestParam String token,
         @PathVariable Long userId
     );
-    public abstract ResponseEntity<?> update(
+    ResponseEntity<?> update(
         @RequestParam String token,
         @PathVariable Long id,
         @RequestBody GoalDTO goalDTO
     );
-    public abstract ResponseEntity<?> delete(
+    ResponseEntity<?> delete(
         @RequestParam String token,
         @PathVariable Long id
     );

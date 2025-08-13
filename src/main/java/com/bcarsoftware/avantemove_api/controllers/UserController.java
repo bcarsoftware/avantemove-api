@@ -61,6 +61,8 @@ public class UserController implements IUserController {
 
         SuccessResponse<User> successResponse = new SuccessResponse<>();
 
+        this.userService.logout(token);
+
         successResponse.setData(null);
         successResponse.setCode(200);
 

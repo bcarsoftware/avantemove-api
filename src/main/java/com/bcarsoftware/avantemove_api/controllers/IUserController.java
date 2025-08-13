@@ -9,27 +9,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public interface IUserController {
-    public abstract ResponseEntity<?> save(@RequestBody UserDTO userDTO);
-    public abstract ResponseEntity<?> login(@RequestBody LoginDTO loginDTO);
-    public abstract ResponseEntity<?> logout(@RequestParam String token);
-    public abstract ResponseEntity<?> logoutAll(
+    ResponseEntity<?> save(@RequestBody UserDTO userDTO);
+    ResponseEntity<?> login(@RequestBody LoginDTO loginDTO);
+    ResponseEntity<?> logout(@RequestParam String token);
+    ResponseEntity<?> logoutAll(
         @RequestParam String username,
         @RequestParam String email,
         @RequestParam String token
     );
-    public abstract ResponseEntity<?> getById(
+    ResponseEntity<?> getById(
         @PathVariable("id") Long id,
         @RequestParam String token
     );
-    public abstract ResponseEntity<?> update(
+    ResponseEntity<?> update(
         @PathVariable("id") Long id,
         @RequestBody UserDTO userDTO,
         @RequestParam String token
     );
-    public abstract ResponseEntity<?> updatePassword(
+    ResponseEntity<?> updatePassword(
         @RequestBody RecoveryDTO recoveryDTO
     );
-    public abstract ResponseEntity<?> delete(
+    ResponseEntity<?> delete(
         @PathVariable("id") Long id,
         @RequestParam String token
     );

@@ -8,29 +8,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public interface ITaskController {
-    public abstract ResponseEntity<?> save(
+    ResponseEntity<?> save(
         @RequestParam String token,
         @RequestBody TaskDTO taskDTO
     );
-    public abstract ResponseEntity<?> getTaskByHabit(
+    ResponseEntity<?> getTaskByHabit(
         @RequestParam String token,
         @PathVariable Long habitId,
         @RequestBody DateIntervalDTO dateIntervalDTO
     );
-    public abstract ResponseEntity<?> getTaskHabitDetached(
+    ResponseEntity<?> getTaskHabitDetached(
         @RequestParam String token,
         @RequestBody DateIntervalDTO dateIntervalDTO
     );
-    public abstract ResponseEntity<?> update(
+    ResponseEntity<?> update(
         @RequestParam String token,
         @PathVariable Long id,
         @RequestBody TaskDTO taskDTO
     );
-    public abstract ResponseEntity<?> finish(
+    ResponseEntity<?> finish(
         @RequestParam String token,
         @PathVariable Long id
     );
-    public abstract ResponseEntity<?> delete(
+    ResponseEntity<?> delete(
         @RequestParam String token,
         @PathVariable Long id
     );

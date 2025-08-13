@@ -6,11 +6,11 @@ import com.bcarsoftware.avantemove_api.dtos.UserDTO;
 import com.bcarsoftware.avantemove_api.models.User;
 
 public interface IUserService {
-    public abstract User save(UserDTO userDTO);
-    public abstract User login(LoginDTO loginDTO);
-    public abstract void logout(String token);
-    public abstract User getById(Long id);
-    public abstract User update(Long id, UserDTO userDTO);
-    public abstract User updatePassword(RecoveryDTO recoveryDTO);
-    public abstract User delete(Long id);
+    User save(UserDTO userDTO);
+    User login(LoginDTO loginDTO);
+    void logout(String token);
+    User getById(Long id);
+    User update(Long id, UserDTO userDTO);
+    User updatePassword(RecoveryDTO recoveryDTO);
+    User delete(Long id);
 }

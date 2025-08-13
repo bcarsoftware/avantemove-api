@@ -5,8 +5,8 @@ import com.bcarsoftware.avantemove_api.dtos.DeleteCategoryDTO;
 import com.bcarsoftware.avantemove_api.models.Category;
 
 public interface ICategoryService {
-    public abstract Category save(CategoryDTO categoryDTO);
-    public abstract Category getCategoryByUserId(Long userId);
-    public abstract Category update(Long id, CategoryDTO categoryDTO);
-    public abstract Category delete(Long id, DeleteCategoryDTO categoryDTO);
+    Category save(CategoryDTO categoryDTO);
+    Category getCategoryByUserId(Long userId);
+    Category update(Long id, CategoryDTO categoryDTO);
+    Category delete(Long id, DeleteCategoryDTO categoryDTO);
 }

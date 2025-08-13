@@ -9,16 +9,16 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AccessTokenRepository extends JpaRepository<AccessToken, Long> {
-    public abstract AccessToken findFirstByToken(String token);
-    public abstract AccessToken findFirstByUsername(String username);
+    AccessToken findFirstByToken(String token);
+    AccessToken findFirstByUsername(String username);
 
     @Modifying
     @Query("update AccessToken as at set at.token='' where at.token=:token")
-    public abstract int deleteAccessTokenByToken(@Param("token") String token);
+    int deleteAccessTokenByToken(@Param("token") String token);
 
     @Modifying
     @Query("update AccessToken at set at.token='' where at.username=:username or at.username=:email")
-    public abstract int deleteAccessTokenByUsernameOrEmail(
+    int deleteAccessTokenByUsernameOrEmail(
         @Param("username") String username,
         @Param("email") String email
     );
