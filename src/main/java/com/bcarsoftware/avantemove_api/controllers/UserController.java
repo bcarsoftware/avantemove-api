@@ -1,9 +1,12 @@
 package com.bcarsoftware.avantemove_api.controllers;
 
+import com.bcarsoftware.avantemove_api.core.jwt.JwtInsert;
 import com.bcarsoftware.avantemove_api.core.responses.SuccessResponse;
 import com.bcarsoftware.avantemove_api.dtos.LoginDTO;
 import com.bcarsoftware.avantemove_api.dtos.RecoveryDTO;
+import com.bcarsoftware.avantemove_api.dtos.RespTokenDTO;
 import com.bcarsoftware.avantemove_api.dtos.UserDTO;
+import com.bcarsoftware.avantemove_api.exceptions.AuthException;
 import com.bcarsoftware.avantemove_api.models.User;
 import com.bcarsoftware.avantemove_api.services.IUserService;
 import com.bcarsoftware.avantemove_api.services.UserService;
@@ -13,8 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
-public class UserController implements IUserController{
+public class UserController implements IUserController {
     private final IUserService userService = new UserService();
+    private final JwtInsert jwtInsert = new JwtInsert();
 
     @Override
     @PostMapping("")
@@ -30,9 +34,21 @@ public class UserController implements IUserController{
     @Override
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
-        SuccessResponse<User> successResponse = new SuccessResponse<>();
+        SuccessResponse<RespTokenDTO> successResponse = new SuccessResponse<>();
 
-        successResponse.setData(this.userService.login(loginDTO));
+        User logged = this.userService.login(loginDTO);
+
+        String token = jwtInsert.createToken(
+            logged.getId(),
+            loginDTO.username(),
+            "user"
+        );
+
+        logged.setPassword(null);
+
+        RespTokenDTO response = new RespTokenDTO(logged, token);
+
+        successResponse.setData(response);
         successResponse.setCode(200);
 
         return ResponseEntity.status(HttpStatus.OK).body(successResponse);
@@ -40,13 +56,34 @@ public class UserController implements IUserController{
 
     @Override
     @PostMapping("/logout")
-    public ResponseEntity<?> logout() {
+    public ResponseEntity<?> logout(@RequestParam String token) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<User> successResponse = new SuccessResponse<>();
 
-        successResponse.setData(this.userService.logout());
+        successResponse.setData(null);
         successResponse.setCode(200);
 
         return ResponseEntity.status(HttpStatus.OK).body(successResponse);
+    }
+
+    @Override
+    public ResponseEntity<?> logoutAll(
+        @RequestParam String username,
+        @RequestParam String email,
+        @RequestParam String token
+    ) {
+        this.jwtInsert.verifyToken(token);
+
+        if (!this.jwtInsert.deleteAllTokensUser(username, email))
+            throw new AuthException("invalid token");
+
+        SuccessResponse<RespTokenDTO> response = new SuccessResponse<>();
+
+        response.setData(null);
+        response.setCode(200);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Override
@@ -55,6 +92,8 @@ public class UserController implements IUserController{
         @PathVariable Long id,
         @RequestParam String token
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<User> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.userService.getById(id));
@@ -70,6 +109,8 @@ public class UserController implements IUserController{
         @RequestBody UserDTO userDTO,
         @RequestParam String token
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<User> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.userService.update(id, userDTO));
@@ -95,6 +136,8 @@ public class UserController implements IUserController{
         @PathVariable Long id,
         @RequestParam String token
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<User> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.userService.delete(id));

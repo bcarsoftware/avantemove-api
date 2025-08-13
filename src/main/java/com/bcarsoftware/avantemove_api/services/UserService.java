@@ -1,9 +1,11 @@
 package com.bcarsoftware.avantemove_api.services;
 
+import com.bcarsoftware.avantemove_api.core.jwt.JwtInsert;
 import com.bcarsoftware.avantemove_api.core.utils.UserDTOChecker;
 import com.bcarsoftware.avantemove_api.dtos.LoginDTO;
 import com.bcarsoftware.avantemove_api.dtos.RecoveryDTO;
 import com.bcarsoftware.avantemove_api.dtos.UserDTO;
+import com.bcarsoftware.avantemove_api.exceptions.AuthException;
 import com.bcarsoftware.avantemove_api.exceptions.DatabaseException;
 import com.bcarsoftware.avantemove_api.models.User;
 import com.bcarsoftware.avantemove_api.repositories.UserRepository;
@@ -14,11 +16,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService implements IUserService{
     @Autowired
+    private JwtInsert jwtInsert;
+    @Autowired
     private UserRepository userRepository;
 
     @Override
     public User save(UserDTO userDTO) {
         User user = this.transferDtoToUser(userDTO);
+        user.setPassword(this.encrypt(user.getPassword()));
 
         try {
             return this.userRepository.save(user);
@@ -30,12 +35,6 @@ public class UserService implements IUserService{
         }
     }
 
-    /**
-     * It needs to be implemented the authentication process.
-     * After done, delete this current comment!
-     * @param loginDTO LoginDTO
-     * @return User
-     */
     @Override
     public User login(LoginDTO loginDTO) {
         String safePassword = this.encrypt(loginDTO.password());
@@ -68,14 +67,10 @@ public class UserService implements IUserService{
         }
     }
 
-    /**
-     * It'll need to be implemented yet!
-     * When full, remove the current comment.
-     * @return User
-     */
     @Override
-    public User logout() {
-        return null;
+    public void logout(String token) {
+        if (!this.jwtInsert.deleteTokenByToken(token))
+            throw new AuthException("user logout failed");
     }
 
     @Override
