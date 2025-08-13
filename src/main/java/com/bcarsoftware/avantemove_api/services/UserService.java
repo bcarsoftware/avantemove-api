@@ -19,6 +19,7 @@ public class UserService implements IUserService{
     @Override
     public User save(UserDTO userDTO) {
         User user = this.transferDtoToUser(userDTO);
+        user.setPassword(this.encrypt(user.getPassword()));
 
         try {
             return this.userRepository.save(user);
@@ -30,12 +31,6 @@ public class UserService implements IUserService{
         }
     }
 
-    /**
-     * It needs to be implemented the authentication process.
-     * After done, delete this current comment!
-     * @param loginDTO LoginDTO
-     * @return User
-     */
     @Override
     public User login(LoginDTO loginDTO) {
         String safePassword = this.encrypt(loginDTO.password());
