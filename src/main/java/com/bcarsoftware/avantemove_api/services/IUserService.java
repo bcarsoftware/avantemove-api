@@ -8,7 +8,7 @@ import com.bcarsoftware.avantemove_api.models.User;
 public interface IUserService {
     public abstract User save(UserDTO userDTO);
     public abstract User login(LoginDTO loginDTO);
-    public abstract User logout();
+    public abstract void logout(String token);
     public abstract User getById(Long id);
     public abstract User update(Long id, UserDTO userDTO);
     public abstract User updatePassword(RecoveryDTO recoveryDTO);

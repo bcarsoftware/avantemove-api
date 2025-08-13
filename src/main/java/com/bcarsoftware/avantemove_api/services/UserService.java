@@ -1,9 +1,11 @@
 package com.bcarsoftware.avantemove_api.services;
 
+import com.bcarsoftware.avantemove_api.core.jwt.JwtInsert;
 import com.bcarsoftware.avantemove_api.core.utils.UserDTOChecker;
 import com.bcarsoftware.avantemove_api.dtos.LoginDTO;
 import com.bcarsoftware.avantemove_api.dtos.RecoveryDTO;
 import com.bcarsoftware.avantemove_api.dtos.UserDTO;
+import com.bcarsoftware.avantemove_api.exceptions.AuthException;
 import com.bcarsoftware.avantemove_api.exceptions.DatabaseException;
 import com.bcarsoftware.avantemove_api.models.User;
 import com.bcarsoftware.avantemove_api.repositories.UserRepository;
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService implements IUserService{
+    @Autowired
+    private JwtInsert jwtInsert;
     @Autowired
     private UserRepository userRepository;
 
@@ -63,14 +67,10 @@ public class UserService implements IUserService{
         }
     }
 
-    /**
-     * It'll need to be implemented yet!
-     * When full, remove the current comment.
-     * @return User
-     */
     @Override
-    public User logout() {
-        return null;
+    public void logout(String token) {
+        if (!this.jwtInsert.deleteTokenByToken(token))
+            throw new AuthException("user logout failed");
     }
 
     @Override

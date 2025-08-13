@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface IUserController {
     public abstract ResponseEntity<?> save(@RequestBody UserDTO userDTO);
     public abstract ResponseEntity<?> login(@RequestBody LoginDTO loginDTO);
-    public abstract ResponseEntity<?> logout();
+    public abstract ResponseEntity<?> logout(@RequestParam String token);
     public abstract ResponseEntity<?> getById(
         @PathVariable("id") Long id,
         @RequestParam String token

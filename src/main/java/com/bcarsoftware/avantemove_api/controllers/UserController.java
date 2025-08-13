@@ -58,10 +58,12 @@ public class UserController implements IUserController{
 
     @Override
     @PostMapping("/logout")
-    public ResponseEntity<?> logout() {
+    public ResponseEntity<?> logout(@RequestParam String token) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<User> successResponse = new SuccessResponse<>();
 
-        successResponse.setData(this.userService.logout());
+        successResponse.setData(null);
         successResponse.setCode(200);
 
         return ResponseEntity.status(HttpStatus.OK).body(successResponse);
