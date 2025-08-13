@@ -6,8 +6,8 @@ import com.bcarsoftware.avantemove_api.models.Goal;
 import java.util.List;
 
 public interface IGoalService {
-    public abstract Goal save(GoalDTO goalDTO);
-    public abstract List<Goal> getByUserId(Long userId);
-    public abstract Goal update(Long id, GoalDTO goalDTO);
-    public abstract Goal delete(Long id);
+    Goal save(GoalDTO goalDTO);
+    List<Goal> getByUserId(Long userId);
+    Goal update(Long id, GoalDTO goalDTO);
+    Goal delete(Long id);
 }

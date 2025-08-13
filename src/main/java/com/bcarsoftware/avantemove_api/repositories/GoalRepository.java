@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface GoalRepository extends JpaRepository<Goal, Long> {
     @Query("select g from Goal as g where g.active=true and g.user.id=:userId")
-    public abstract List<Goal> findGoalByUserId(@Param("userId") Long userId);
+    List<Goal> findGoalByUserId(@Param("userId") Long userId);
 
-    public abstract Goal findFirstById(Long id);
+    Goal findFirstById(Long id);
 }

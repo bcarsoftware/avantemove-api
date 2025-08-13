@@ -47,7 +47,7 @@ public class JwtInsert {
     public void verifyToken(String token) {
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO(null, token);
 
-        this.accessTokenService.getAccessTokenByToken(accessTokenDTO);
+        var result = this.accessTokenService.getAccessTokenByToken(accessTokenDTO);
 
         SecretKey key = this.getSecretKey();
 

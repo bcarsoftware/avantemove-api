@@ -1,5 +1,6 @@
 package com.bcarsoftware.avantemove_api.controllers;
 
+import com.bcarsoftware.avantemove_api.core.jwt.JwtInsert;
 import com.bcarsoftware.avantemove_api.core.responses.SuccessResponse;
 import com.bcarsoftware.avantemove_api.dtos.HabitDTO;
 import com.bcarsoftware.avantemove_api.models.Habit;
@@ -16,10 +17,16 @@ import java.util.List;
 @RequestMapping("/habit")
 public class HabitController implements IHabitController{
     private final IHabitService habitService = new HabitService();
+    private final JwtInsert jwtInsert = new JwtInsert();
 
     @Override
     @PostMapping("")
-    public ResponseEntity<?> save(@RequestBody HabitDTO habitDTO) {
+    public ResponseEntity<?> save(
+        @RequestParam String token,
+        @RequestBody HabitDTO habitDTO
+    ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<Habit> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.habitService.save(habitDTO));
@@ -30,7 +37,12 @@ public class HabitController implements IHabitController{
 
     @Override
     @GetMapping("/{userId}/user")
-    public ResponseEntity<?> getHabitByUserId(@PathVariable Long userId) {
+    public ResponseEntity<?> getHabitByUserId(
+        @RequestParam String token,
+        @PathVariable Long userId
+    ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<List<Habit>> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.habitService.getHabitByUserId(userId));
@@ -41,7 +53,12 @@ public class HabitController implements IHabitController{
 
     @Override
     @GetMapping("/{goalId}/goal")
-    public ResponseEntity<?> getHabitByGoalId(@PathVariable Long goalId) {
+    public ResponseEntity<?> getHabitByGoalId(
+        @RequestParam String token,
+        @PathVariable Long goalId
+    ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<List<Habit>> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.habitService.getHabitByGoalId(goalId));
@@ -53,9 +70,12 @@ public class HabitController implements IHabitController{
     @Override
     @PatchMapping("/{id}/update")
     public ResponseEntity<?> update(
+        @RequestParam String token,
         @PathVariable Long id,
         @RequestBody HabitDTO habitDTO
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<Habit> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.habitService.update(id, habitDTO));
@@ -66,7 +86,12 @@ public class HabitController implements IHabitController{
 
     @Override
     @DeleteMapping("/{id}/delete")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(
+        @RequestParam String token,
+        @PathVariable Long id
+    ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<Habit> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.habitService.delete(id));

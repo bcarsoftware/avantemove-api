@@ -9,11 +9,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select u from User as u where (u.email=:username or u.username=:username) and u.password=:password")
-    public abstract User makeUserLogin(String username, String password);
+    User makeUserLogin(
+        @Param("username") String username,
+        @Param("password") String password
+    );
 
-    public abstract User findUserById(Long id);
+    User findUserById(Long id);
 
-    public abstract User findUserByEmail(String email);
+    User findUserByEmail(String email);
 
-    public abstract User findFirstById(Long id);
+    User findFirstById(Long id);
 }

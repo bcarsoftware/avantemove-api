@@ -1,5 +1,6 @@
 package com.bcarsoftware.avantemove_api.controllers;
 
+import com.bcarsoftware.avantemove_api.core.jwt.JwtInsert;
 import com.bcarsoftware.avantemove_api.core.responses.SuccessResponse;
 import com.bcarsoftware.avantemove_api.dtos.DateIntervalDTO;
 import com.bcarsoftware.avantemove_api.dtos.TaskDTO;
@@ -16,10 +17,16 @@ import java.util.List;
 @RequestMapping("/task")
 public class TaskController implements ITaskController {
     private final ITaskService taskService = new TaskService();
+    private final JwtInsert jwtInsert = new JwtInsert();
 
     @Override
     @PostMapping("")
-    public ResponseEntity<?> save(@RequestBody TaskDTO taskDTO) {
+    public ResponseEntity<?> save(
+        @RequestParam String token,
+        @RequestBody TaskDTO taskDTO
+    ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<Task> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.taskService.save(taskDTO));
@@ -31,9 +38,12 @@ public class TaskController implements ITaskController {
     @Override
     @GetMapping("/{habitId}/habit")
     public ResponseEntity<?> getTaskByHabit(
+        @RequestParam String token,
         @PathVariable Long habitId,
         @RequestBody DateIntervalDTO dateIntervalDTO
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<List<Task>> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.taskService.getTaskByHabit(habitId, dateIntervalDTO));
@@ -44,7 +54,12 @@ public class TaskController implements ITaskController {
 
     @Override
     @GetMapping("/detached")
-    public ResponseEntity<?> getTaskHabitDetached(@RequestBody DateIntervalDTO dateIntervalDTO) {
+    public ResponseEntity<?> getTaskHabitDetached(
+        @RequestParam String token,
+        @RequestBody DateIntervalDTO dateIntervalDTO
+    ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<List<Task>> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.taskService.getTaskHabitDetached(dateIntervalDTO));
@@ -56,9 +71,12 @@ public class TaskController implements ITaskController {
     @Override
     @PatchMapping("/{id}/update")
     public ResponseEntity<?> update(
+        @RequestParam String token,
         @PathVariable Long id,
         @RequestBody TaskDTO taskDTO
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<Task> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.taskService.update(id, taskDTO));
@@ -69,7 +87,12 @@ public class TaskController implements ITaskController {
 
     @Override
     @PatchMapping("/{id}/finish")
-    public ResponseEntity<?> finish(@PathVariable Long id) {
+    public ResponseEntity<?> finish(
+        @RequestParam String token,
+        @PathVariable Long id
+    ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<Task> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.taskService.finish(id));
@@ -80,7 +103,12 @@ public class TaskController implements ITaskController {
 
     @Override
     @DeleteMapping("/{id}/delete")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(
+        @RequestParam String token,
+        @PathVariable Long id
+    ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<Task> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.taskService.delete(id));

@@ -11,11 +11,11 @@ import java.util.List;
 @Repository
 public interface HabitRepository extends JpaRepository<Habit, Long> {
     @Query("select h from Habit as h where h.active=true and h.user.id=:id")
-    public abstract List<Habit> findHabitByUserId(@Param("id") Long id);
+    List<Habit> findHabitByUserId(@Param("id") Long id);
 
     @Query("select h from Habit as h where h.active=true and h.goal.id=:id")
-    public abstract List<Habit> findHabitByGoalId(@Param("id") Long id);
+    List<Habit> findHabitByGoalId(@Param("id") Long id);
 
     @Query("select h from Habit as h where h.active=true and h.id=:id")
-    public abstract Habit findFirstById(@Param("id") Long id);
+    Habit findFirstById(@Param("id") Long id);
 }

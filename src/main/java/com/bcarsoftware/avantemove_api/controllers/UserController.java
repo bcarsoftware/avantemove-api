@@ -61,6 +61,8 @@ public class UserController implements IUserController {
 
         SuccessResponse<User> successResponse = new SuccessResponse<>();
 
+        this.userService.logout(token);
+
         successResponse.setData(null);
         successResponse.setCode(200);
 
@@ -68,6 +70,7 @@ public class UserController implements IUserController {
     }
 
     @Override
+    @PostMapping("/logout/all")
     public ResponseEntity<?> logoutAll(
         @RequestParam String username,
         @RequestParam String email,

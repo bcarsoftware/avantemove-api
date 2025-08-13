@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface BeliefRepository extends JpaRepository<Belief, Long> {
-    public abstract List<Belief> findBeliefByUserId(Long userId);
+    List<Belief> findBeliefByUserId(Long userId);
 
-    public abstract Belief findFirstById(Long id);
+    Belief findFirstById(Long id);
 }
