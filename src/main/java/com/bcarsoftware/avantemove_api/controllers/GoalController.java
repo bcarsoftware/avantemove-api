@@ -1,5 +1,6 @@
 package com.bcarsoftware.avantemove_api.controllers;
 
+import com.bcarsoftware.avantemove_api.core.jwt.JwtInsert;
 import com.bcarsoftware.avantemove_api.core.responses.SuccessResponse;
 import com.bcarsoftware.avantemove_api.dtos.GoalDTO;
 import com.bcarsoftware.avantemove_api.models.Goal;
@@ -15,6 +16,7 @@ import java.util.List;
 @RequestMapping("/goal")
 public class GoalController implements IGoalController {
     private final IGoalService goalService = new GoalService();
+    private final JwtInsert jwtInsert = new JwtInsert();
 
     @Override
     @PostMapping("")
@@ -22,6 +24,8 @@ public class GoalController implements IGoalController {
         @RequestParam String token,
         @RequestBody GoalDTO goalDTO
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<Goal> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.goalService.save(goalDTO));
@@ -36,6 +40,8 @@ public class GoalController implements IGoalController {
         @RequestParam String token,
         @PathVariable Long userId
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<List<Goal>> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.goalService.getByUserId(userId));
@@ -51,6 +57,8 @@ public class GoalController implements IGoalController {
         @PathVariable Long id,
         @RequestBody GoalDTO goalDTO
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<Goal> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.goalService.update(id, goalDTO));
@@ -65,6 +73,8 @@ public class GoalController implements IGoalController {
         @RequestParam String token,
         @PathVariable Long id
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<Goal> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.goalService.delete(id));

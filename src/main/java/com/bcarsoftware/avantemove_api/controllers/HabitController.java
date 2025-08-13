@@ -1,5 +1,6 @@
 package com.bcarsoftware.avantemove_api.controllers;
 
+import com.bcarsoftware.avantemove_api.core.jwt.JwtInsert;
 import com.bcarsoftware.avantemove_api.core.responses.SuccessResponse;
 import com.bcarsoftware.avantemove_api.dtos.HabitDTO;
 import com.bcarsoftware.avantemove_api.models.Habit;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequestMapping("/habit")
 public class HabitController implements IHabitController{
     private final IHabitService habitService = new HabitService();
+    private final JwtInsert jwtInsert = new JwtInsert();
 
     @Override
     @PostMapping("")
@@ -23,6 +25,8 @@ public class HabitController implements IHabitController{
         @RequestParam String token,
         @RequestBody HabitDTO habitDTO
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<Habit> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.habitService.save(habitDTO));
@@ -37,6 +41,8 @@ public class HabitController implements IHabitController{
         @RequestParam String token,
         @PathVariable Long userId
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<List<Habit>> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.habitService.getHabitByUserId(userId));
@@ -51,6 +57,8 @@ public class HabitController implements IHabitController{
         @RequestParam String token,
         @PathVariable Long goalId
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<List<Habit>> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.habitService.getHabitByGoalId(goalId));
@@ -66,6 +74,8 @@ public class HabitController implements IHabitController{
         @PathVariable Long id,
         @RequestBody HabitDTO habitDTO
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<Habit> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.habitService.update(id, habitDTO));
@@ -80,6 +90,8 @@ public class HabitController implements IHabitController{
         @RequestParam String token,
         @PathVariable Long id
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<Habit> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.habitService.delete(id));

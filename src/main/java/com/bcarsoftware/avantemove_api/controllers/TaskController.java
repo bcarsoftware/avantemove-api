@@ -1,5 +1,6 @@
 package com.bcarsoftware.avantemove_api.controllers;
 
+import com.bcarsoftware.avantemove_api.core.jwt.JwtInsert;
 import com.bcarsoftware.avantemove_api.core.responses.SuccessResponse;
 import com.bcarsoftware.avantemove_api.dtos.DateIntervalDTO;
 import com.bcarsoftware.avantemove_api.dtos.TaskDTO;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequestMapping("/task")
 public class TaskController implements ITaskController {
     private final ITaskService taskService = new TaskService();
+    private final JwtInsert jwtInsert = new JwtInsert();
 
     @Override
     @PostMapping("")
@@ -23,6 +25,8 @@ public class TaskController implements ITaskController {
         @RequestParam String token,
         @RequestBody TaskDTO taskDTO
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<Task> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.taskService.save(taskDTO));
@@ -38,6 +42,8 @@ public class TaskController implements ITaskController {
         @PathVariable Long habitId,
         @RequestBody DateIntervalDTO dateIntervalDTO
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<List<Task>> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.taskService.getTaskByHabit(habitId, dateIntervalDTO));
@@ -52,6 +58,8 @@ public class TaskController implements ITaskController {
         @RequestParam String token,
         @RequestBody DateIntervalDTO dateIntervalDTO
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<List<Task>> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.taskService.getTaskHabitDetached(dateIntervalDTO));
@@ -67,6 +75,8 @@ public class TaskController implements ITaskController {
         @PathVariable Long id,
         @RequestBody TaskDTO taskDTO
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<Task> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.taskService.update(id, taskDTO));
@@ -81,6 +91,8 @@ public class TaskController implements ITaskController {
         @RequestParam String token,
         @PathVariable Long id
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<Task> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.taskService.finish(id));
@@ -95,6 +107,8 @@ public class TaskController implements ITaskController {
         @RequestParam String token,
         @PathVariable Long id
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<Task> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.taskService.delete(id));

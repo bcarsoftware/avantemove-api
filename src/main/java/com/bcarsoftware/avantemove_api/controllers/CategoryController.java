@@ -1,5 +1,6 @@
 package com.bcarsoftware.avantemove_api.controllers;
 
+import com.bcarsoftware.avantemove_api.core.jwt.JwtInsert;
 import com.bcarsoftware.avantemove_api.core.responses.SuccessResponse;
 import com.bcarsoftware.avantemove_api.dtos.CategoryDTO;
 import com.bcarsoftware.avantemove_api.dtos.DeleteCategoryDTO;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/category")
 public class CategoryController implements ICategoryController {
     private final ICategoryService categoryService = new CategoryService();
+    private final JwtInsert jwtInsert = new JwtInsert();
 
     @Override
     @PostMapping("")
@@ -21,6 +23,8 @@ public class CategoryController implements ICategoryController {
         @RequestParam String token,
         @RequestBody CategoryDTO categoryDTO
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<Category> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.categoryService.save(categoryDTO));
@@ -35,6 +39,8 @@ public class CategoryController implements ICategoryController {
         @RequestParam String token,
         @PathVariable Long userId
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<Category> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.categoryService.getCategoryByUserId(userId));
@@ -50,6 +56,8 @@ public class CategoryController implements ICategoryController {
         @PathVariable Long id,
         @RequestBody CategoryDTO categoryDTO
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<Category> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.categoryService.update(id, categoryDTO));
@@ -65,6 +73,8 @@ public class CategoryController implements ICategoryController {
             @PathVariable Long id,
             @RequestBody DeleteCategoryDTO categoryDTO
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<Category> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.categoryService.delete(id, categoryDTO));

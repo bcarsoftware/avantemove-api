@@ -1,5 +1,6 @@
 package com.bcarsoftware.avantemove_api.controllers;
 
+import com.bcarsoftware.avantemove_api.core.jwt.JwtInsert;
 import com.bcarsoftware.avantemove_api.core.responses.SuccessResponse;
 import com.bcarsoftware.avantemove_api.dtos.BeliefDTO;
 import com.bcarsoftware.avantemove_api.models.Belief;
@@ -15,6 +16,7 @@ import java.util.List;
 @RequestMapping("/belief")
 public class BeliefController implements IBeliefController {
     private final IBeliefService beliefService = new BeliefService();
+    private final JwtInsert jwtInsert = new JwtInsert();
 
     @Override
     @PostMapping("")
@@ -22,6 +24,8 @@ public class BeliefController implements IBeliefController {
         @RequestParam String token,
         @RequestBody BeliefDTO beliefDTO
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<Belief> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.beliefService.save(beliefDTO));
@@ -36,6 +40,8 @@ public class BeliefController implements IBeliefController {
         @RequestParam String token,
         @PathVariable Long userId
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<List<Belief>> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.beliefService.getBeliefByUserId(userId));
@@ -51,6 +57,8 @@ public class BeliefController implements IBeliefController {
         @PathVariable Long id,
         @RequestBody BeliefDTO beliefDTO
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<Belief> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.beliefService.update(id, beliefDTO));
@@ -65,6 +73,8 @@ public class BeliefController implements IBeliefController {
         @RequestParam String token,
         @PathVariable Long id
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<Belief> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.beliefService.delete(id));
