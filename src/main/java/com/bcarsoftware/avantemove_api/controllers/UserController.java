@@ -6,6 +6,7 @@ import com.bcarsoftware.avantemove_api.dtos.LoginDTO;
 import com.bcarsoftware.avantemove_api.dtos.RecoveryDTO;
 import com.bcarsoftware.avantemove_api.dtos.RespTokenDTO;
 import com.bcarsoftware.avantemove_api.dtos.UserDTO;
+import com.bcarsoftware.avantemove_api.exceptions.AuthException;
 import com.bcarsoftware.avantemove_api.models.User;
 import com.bcarsoftware.avantemove_api.services.IUserService;
 import com.bcarsoftware.avantemove_api.services.UserService;
@@ -13,12 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RestController
 @RequestMapping("/user")
-public class UserController implements IUserController{
+public class UserController implements IUserController {
     private final IUserService userService = new UserService();
     private final JwtInsert jwtInsert = new JwtInsert();
 
@@ -70,11 +68,32 @@ public class UserController implements IUserController{
     }
 
     @Override
+    public ResponseEntity<?> logoutAll(
+        @RequestParam String username,
+        @RequestParam String email,
+        @RequestParam String token
+    ) {
+        this.jwtInsert.verifyToken(token);
+
+        if (!this.jwtInsert.deleteAllTokensUser(username, email))
+            throw new AuthException("invalid token");
+
+        SuccessResponse<RespTokenDTO> response = new SuccessResponse<>();
+
+        response.setData(null);
+        response.setCode(200);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @Override
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(
         @PathVariable Long id,
         @RequestParam String token
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<User> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.userService.getById(id));
@@ -90,6 +109,8 @@ public class UserController implements IUserController{
         @RequestBody UserDTO userDTO,
         @RequestParam String token
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<User> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.userService.update(id, userDTO));
@@ -115,6 +136,8 @@ public class UserController implements IUserController{
         @PathVariable Long id,
         @RequestParam String token
     ) {
+        this.jwtInsert.verifyToken(token);
+
         SuccessResponse<User> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.userService.delete(id));
