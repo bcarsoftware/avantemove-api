@@ -3,7 +3,6 @@ package com.bcarsoftware.avantemove_api.services;
 import com.bcarsoftware.avantemove_api.core.jwt.JwtInsert;
 import com.bcarsoftware.avantemove_api.core.utils.UserDTOChecker;
 import com.bcarsoftware.avantemove_api.dtos.LoginDTO;
-import com.bcarsoftware.avantemove_api.dtos.RecoveryDTO;
 import com.bcarsoftware.avantemove_api.dtos.UserDTO;
 import com.bcarsoftware.avantemove_api.exceptions.AuthException;
 import com.bcarsoftware.avantemove_api.exceptions.DatabaseException;
@@ -96,33 +95,6 @@ public class UserService implements IUserService{
 
         try {
             return this.userRepository.save(user);
-        }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
-
-            throw new DatabaseException("Internal Server Error", 500);
-        }
-    }
-
-    @Override
-    public User updatePassword(RecoveryDTO recoveryDTO) {
-        UserDTOChecker.checkPassword(recoveryDTO.password());
-
-        String safePassword = this.encrypt(recoveryDTO.password());
-
-        User user = this.userRepository.findUserByEmail(recoveryDTO.email());
-
-        if (user == null)
-            throw new DatabaseException("user not found", 404);
-
-        user.setPassword(safePassword);
-
-        try {
-            User updated = this.userRepository.save(user);
-
-            updated.setPassword(null);
-
-            return updated;
         }
         catch (Exception e) {
             System.err.println(e.getMessage());
