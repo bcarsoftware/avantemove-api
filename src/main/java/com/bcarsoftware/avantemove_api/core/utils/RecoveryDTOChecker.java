@@ -3,6 +3,7 @@ package com.bcarsoftware.avantemove_api.core.utils;
 import com.bcarsoftware.avantemove_api.dtos.RecoveryDTO;
 import com.bcarsoftware.avantemove_api.exceptions.BodyException;
 
+import java.util.Collections;
 import java.util.List;
 
 public class RecoveryDTOChecker {
@@ -43,6 +44,21 @@ public class RecoveryDTOChecker {
                 throw new BodyException("invalid response found");
             if (!originalResponses.get(i).equals(recoveryResponses.get(i)))
                 throw new BodyException("invalid response found");
+        }
+    }
+
+    public static void checkUniqueQuestionsAnswers(List<String> questions, List<String> answers) {
+        if (questions.size() != answers.size())
+            throw new BodyException("questions and responses don't match");
+
+        int length = questions.size();
+
+        for (int i = 0; i < length; i++) {
+            int countQ = Collections.frequency(questions, questions.get(i));
+            int countR = Collections.frequency(answers, answers.get(i));
+
+            if (countR > 1 || countQ > 1)
+                throw new BodyException("questions and responses repeated");
         }
     }
 

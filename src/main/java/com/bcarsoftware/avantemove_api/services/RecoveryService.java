@@ -126,6 +126,10 @@ public class RecoveryService implements IRecoveryService {
 
     private Recovery getRecovery(Recovery recovery, RecoveryDTO recoveryDTO) {
         RecoveryDTOChecker.recoveryDTOChecker(recoveryDTO);
+        RecoveryDTOChecker.checkUniqueQuestionsAnswers(
+            List.of(recoveryDTO.firstQuestion(), recoveryDTO.secondQuestion(), recovery.getThirdQuestion()),
+            List.of(recoveryDTO.firstResponse(), recoveryDTO.secondResponse(), recoveryDTO.thirdResponse())
+        );
 
         recovery.setFirstQuestion(recoveryDTO.firstQuestion());
         recovery.setSecondQuestion(recoveryDTO.secondQuestion());
