@@ -48,6 +48,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Belief> beliefs;
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Recovery recovery;
+
     @Column(name = "created_at")
     private Instant createdAt;
     @Column(name = "updated_at")

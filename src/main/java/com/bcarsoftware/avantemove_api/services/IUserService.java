@@ -1,7 +1,6 @@
 package com.bcarsoftware.avantemove_api.services;
 
 import com.bcarsoftware.avantemove_api.dtos.LoginDTO;
-import com.bcarsoftware.avantemove_api.dtos.RecoveryDTO;
 import com.bcarsoftware.avantemove_api.dtos.UserDTO;
 import com.bcarsoftware.avantemove_api.models.User;
 
@@ -11,6 +10,5 @@ public interface IUserService {
     void logout(String token);
     User getById(Long id);
     User update(Long id, UserDTO userDTO);
-    User updatePassword(RecoveryDTO recoveryDTO);
     User delete(Long id);
 }

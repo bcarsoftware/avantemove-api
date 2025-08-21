@@ -1,7 +1,6 @@
 package com.bcarsoftware.avantemove_api.controllers;
 
 import com.bcarsoftware.avantemove_api.dtos.LoginDTO;
-import com.bcarsoftware.avantemove_api.dtos.RecoveryDTO;
 import com.bcarsoftware.avantemove_api.dtos.UserDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,9 +24,6 @@ public interface IUserController {
         @PathVariable("id") Long id,
         @RequestBody UserDTO userDTO,
         @RequestParam String token
-    );
-    ResponseEntity<?> updatePassword(
-        @RequestBody RecoveryDTO recoveryDTO
     );
     ResponseEntity<?> delete(
         @PathVariable("id") Long id,

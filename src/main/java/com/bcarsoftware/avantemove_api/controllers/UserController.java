@@ -3,7 +3,6 @@ package com.bcarsoftware.avantemove_api.controllers;
 import com.bcarsoftware.avantemove_api.core.jwt.JwtInsert;
 import com.bcarsoftware.avantemove_api.core.responses.SuccessResponse;
 import com.bcarsoftware.avantemove_api.dtos.LoginDTO;
-import com.bcarsoftware.avantemove_api.dtos.RecoveryDTO;
 import com.bcarsoftware.avantemove_api.dtos.RespTokenDTO;
 import com.bcarsoftware.avantemove_api.dtos.UserDTO;
 import com.bcarsoftware.avantemove_api.exceptions.AuthException;
@@ -117,17 +116,6 @@ public class UserController implements IUserController {
         SuccessResponse<User> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.userService.update(id, userDTO));
-        successResponse.setCode(200);
-
-        return ResponseEntity.status(HttpStatus.OK).body(successResponse);
-    }
-
-    @Override
-    @PatchMapping("/recovery")
-    public ResponseEntity<?> updatePassword(RecoveryDTO recoveryDTO) {
-        SuccessResponse<User> successResponse = new SuccessResponse<>();
-
-        successResponse.setData(this.userService.updatePassword(recoveryDTO));
         successResponse.setCode(200);
 
         return ResponseEntity.status(HttpStatus.OK).body(successResponse);
