@@ -23,6 +23,29 @@ public class RecoveryDTOChecker {
         ));
     }
 
+    public static void checkContentQuestionsResponses(
+            List<String> originalQuestions, List<String> recoveryQuestions,
+            List<String> originalResponses, List<String> recoveryResponses
+    ) {
+        if (originalQuestions.size() != recoveryQuestions.size())
+            throw new BodyException("questions and responses don't match");
+
+        if (originalResponses.size() != recoveryResponses.size())
+            throw new BodyException("questions and responses don't match");
+
+        if (originalQuestions.size() != recoveryResponses.size())
+            throw new BodyException("questions and responses don't match");
+
+        int length = originalResponses.size();
+
+        for (int i = 0; i < length; i++) {
+            if (!originalQuestions.get(i).equals(recoveryQuestions.get(i)))
+                throw new BodyException("invalid response found");
+            if (!originalResponses.get(i).equals(recoveryResponses.get(i)))
+                throw new BodyException("invalid response found");
+        }
+    }
+
     private static void questionsChecker(List<String> questions) {
         String question = "^[A-Za-z0-9.-? ]{2,128}$]";
 
