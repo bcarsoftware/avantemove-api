@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public record TaskDTO(
         Long habitId,
+        String name,
         String comment,
         int xpValue,
         LocalDate date,

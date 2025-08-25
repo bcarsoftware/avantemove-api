@@ -17,6 +17,10 @@ public class Task {
     @ManyToOne(fetch = FetchType.LAZY)
     private Habit habit;
 
+    @Column(nullable = false)
+    private String name;
+
+    @Column(length = 512)
     private String comment;
 
     @Column(nullable = false)
