@@ -158,6 +158,7 @@ public class TaskService implements ITaskService {
         var habit = taskDTO.habitId() == 0 ? null : this.getHabit(taskDTO.habitId());
 
         task.setHabit(habit);
+        task.setName(taskDTO.name());
         task.setComment(taskDTO.comment());
         task.setXpValue(taskDTO.xpValue());
         task.setFinished(taskDTO.finished());

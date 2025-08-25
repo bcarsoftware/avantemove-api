@@ -11,8 +11,9 @@ public class TaskDTOChecker {
             throw new BodyException("task xp value cannot be negative");
 
         var failed = List.of(
+            !taskDTO.name().matches("^[a-zA-Z_0-9][a-zA-Z-_ ,.0-9]{1,252}[a-zA-Z.0-9]$"),
             !taskDTO.comment().matches("^[a-zA-Z_0-9][a-zA-Z-_ ,.0-9]{1,510}[a-zA-Z.0-9]$"),
-            taskDTO.comment().contains("  ")
+            taskDTO.comment().contains("  ") || taskDTO.name().contains("  ")
         );
 
         if (failed.contains(true))
