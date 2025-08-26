@@ -7,15 +7,15 @@ import org.springframework.stereotype.Component;
 @Getter
 @Component
 public class EnvironLoader {
-    @Value("spring.application.name")
+    @Value("${spring.application.name}")
     private String appName;
 
-    @Value("spring.jwt.secret")
+    @Value("${spring.jwt.secret}")
     private String secret;
 
-    @Value("spring.jwt.expiration")
+    @Value("${spring.jwt.expiration}")
     private int expiration;
 
-    @Value("spring.jwt.algorithm")
+    @Value("${spring.jwt.algorithm}")
     private String algorithm;
 }
