@@ -4,6 +4,7 @@ import com.bcarsoftware.avantemove_api.core.jwt.JwtInsert;
 import com.bcarsoftware.avantemove_api.core.responses.SuccessResponse;
 import com.bcarsoftware.avantemove_api.dtos.LoginDTO;
 import com.bcarsoftware.avantemove_api.dtos.RespTokenDTO;
+import com.bcarsoftware.avantemove_api.dtos.TokenDTO;
 import com.bcarsoftware.avantemove_api.dtos.UserDTO;
 import com.bcarsoftware.avantemove_api.exceptions.AuthException;
 import com.bcarsoftware.avantemove_api.models.User;
@@ -132,6 +133,19 @@ public class UserController implements IUserController {
         SuccessResponse<User> successResponse = new SuccessResponse<>();
 
         successResponse.setData(this.userService.delete(id));
+        successResponse.setCode(200);
+
+        return ResponseEntity.status(HttpStatus.OK).body(successResponse);
+    }
+
+    @Override
+    @PostMapping("/token")
+    public ResponseEntity<?> getUserByToken(@RequestBody TokenDTO tokenDTO) {
+        jwtInsert.verifyToken(tokenDTO.token());
+
+        SuccessResponse<User> successResponse = new SuccessResponse<>();
+
+        successResponse.setData(this.userService.getUserByToken(tokenDTO));
         successResponse.setCode(200);
 
         return ResponseEntity.status(HttpStatus.OK).body(successResponse);

@@ -3,9 +3,11 @@ package com.bcarsoftware.avantemove_api.services;
 import com.bcarsoftware.avantemove_api.core.jwt.JwtInsert;
 import com.bcarsoftware.avantemove_api.core.utils.UserDTOChecker;
 import com.bcarsoftware.avantemove_api.dtos.LoginDTO;
+import com.bcarsoftware.avantemove_api.dtos.TokenDTO;
 import com.bcarsoftware.avantemove_api.dtos.UserDTO;
 import com.bcarsoftware.avantemove_api.exceptions.AuthException;
 import com.bcarsoftware.avantemove_api.exceptions.DatabaseException;
+import com.bcarsoftware.avantemove_api.models.AccessToken;
 import com.bcarsoftware.avantemove_api.models.User;
 import com.bcarsoftware.avantemove_api.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,6 +126,21 @@ public class UserService implements IUserService{
 
             throw new DatabaseException("Internal Server Error", 500);
         }
+    }
+
+    @Override
+    public User getUserByToken(TokenDTO tokenDTO) {
+        AccessToken accessToken = jwtInsert.getAccessTokenByToken(tokenDTO.token());
+
+        User user = userRepository.findUserByUsernameOrEmail(
+            accessToken.getUsername(),
+            accessToken.getUsername()
+        );
+
+        if (user == null)
+            throw new DatabaseException("user not found", 404);
+
+        return user;
     }
 
     protected String encrypt(String password) {

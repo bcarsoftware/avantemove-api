@@ -3,6 +3,7 @@ package com.bcarsoftware.avantemove_api.core.jwt;
 import com.bcarsoftware.avantemove_api.core.environ.EnvironLoader;
 import com.bcarsoftware.avantemove_api.dtos.AccessTokenDTO;
 import com.bcarsoftware.avantemove_api.exceptions.AuthException;
+import com.bcarsoftware.avantemove_api.models.AccessToken;
 import com.bcarsoftware.avantemove_api.services.AccessTokenService;
 import com.bcarsoftware.avantemove_api.services.IAccessTokenService;
 import io.jsonwebtoken.Jwts;
@@ -60,6 +61,17 @@ public class JwtInsert {
         catch (Exception e) {
             throw new AuthException("user not authorized");
         }
+    }
+
+    public AccessToken getAccessTokenByToken(String token) {
+        AccessTokenDTO accessTokenDTO = new AccessTokenDTO(null, token);
+
+        AccessToken accessToken = this.accessTokenService.getAccessTokenByToken(accessTokenDTO);
+
+        if (accessToken == null)
+            throw new AuthException("user not found to that token");
+
+        return accessToken;
     }
 
     public boolean deleteTokenByToken(String token) {
