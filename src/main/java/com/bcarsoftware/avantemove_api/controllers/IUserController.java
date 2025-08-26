@@ -1,6 +1,7 @@
 package com.bcarsoftware.avantemove_api.controllers;
 
 import com.bcarsoftware.avantemove_api.dtos.LoginDTO;
+import com.bcarsoftware.avantemove_api.dtos.TokenDTO;
 import com.bcarsoftware.avantemove_api.dtos.UserDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,4 +30,5 @@ public interface IUserController {
         @PathVariable("id") Long id,
         @RequestParam String token
     );
+    ResponseEntity<?> getUserByToken(@RequestBody TokenDTO tokenDTO);
 }
