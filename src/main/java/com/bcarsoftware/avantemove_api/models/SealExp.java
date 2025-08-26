@@ -13,6 +13,7 @@ public class SealExp {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(length = 67)
     private String name;
 
     @Column(name = "start_xp", unique = true, nullable = false)

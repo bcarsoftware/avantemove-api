@@ -17,21 +17,23 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "first_name")
+    @Column(name = "first_name", length = 34)
     private String firstName;
-    @JoinColumn(name = "last_name")
+    @Column(name = "last_name", length = 256)
     private String lastName;
     @JoinColumn(name = "birth_date")
     private LocalDate birthDate;
 
     private EnumGender gender;
 
-    @Column(unique = true)
+    @Column(unique = true, length = 256)
     private String username;
-    @Column(unique = true)
+    @Column(unique = true, length = 258)
     private String email;
 
     private String password;
+
+    @Column(length = 20)
     private String mobile;
     private int experience = 10;
     private boolean active;

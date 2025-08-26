@@ -19,7 +19,10 @@ public class Goal {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Column(length = 67)
     private String name;
+
+    @Column(length = 514)
     private String description;
 
     @Column(name = "start_date")

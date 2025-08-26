@@ -23,7 +23,10 @@ public class Habit {
     @JoinColumn(name = "goal_id")
     private Goal goal;
 
+    @Column(length = 67)
     private String name;
+
+    @Column(length = 35)
     private String category;
 
     @Column(name = "days_week")

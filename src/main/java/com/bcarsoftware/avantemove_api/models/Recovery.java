@@ -26,13 +26,13 @@ public class Recovery {
     @Column(name = "third_question", nullable = false)
     private String thirdQuestion;
 
-    @Column(name = "first_response", nullable = false)
+    @Column(name = "first_response", nullable = false, length = 256)
     private String firstResponse;
 
-    @Column(name = "second_response", nullable = false)
+    @Column(name = "second_response", nullable = false, length = 256)
     private String secondResponse;
 
-    @Column(name = "third_response", nullable = false)
+    @Column(name = "third_response", nullable = false, length = 256)
     private String thirdResponse;
 
     @Column(name = "created_at")

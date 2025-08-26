@@ -17,6 +17,7 @@ public class Belief {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(length = 514)
     private String description;
 
     @Column(name = "created_at")

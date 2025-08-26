@@ -35,13 +35,6 @@ public class UserDTOChecker {
             throw new BodyException("experience cannot be negative");
     }
 
-    public static void checkPassword(String password) {
-        String regex = "^[\\S+]{8,32}$";
-
-        if (!password.matches(regex))
-            throw new BodyException("password characters not match");
-    }
-
     private static Map<String, String> regexes() {
         Map<String, String> regex = new HashMap<>();
 
@@ -56,10 +49,6 @@ public class UserDTOChecker {
         regex.put("firstName", "^[A-Z][a-zA-Z- .]{0,30}[a-zA-Z.]$");
 
         regex.put("lastName", "^[A-Z][a-zA-Z- .]{1,253}[a-zA-Z.]$");
-
-        regex.put("description",
-            "^[a-zA-Z_0-9][a-zA-Z-_ ,.0-9]{1,510}[a-zA-Z.0-9]$"
-        );
 
         regex.put("password", "^[\\S+]{8,32}$");
 
