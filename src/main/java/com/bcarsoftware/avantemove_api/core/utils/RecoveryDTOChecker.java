@@ -63,7 +63,7 @@ public class RecoveryDTOChecker {
     }
 
     private static void questionsChecker(List<String> questions) {
-        String question = "^[A-Za-z0-9.-? ]{2,128}$]";
+        String question = "^[\\p{L}0-9.? -]{2,128}$";
 
         questions.forEach(quest -> {
             if (!quest.matches(question))
@@ -72,11 +72,11 @@ public class RecoveryDTOChecker {
     }
 
     private static void responsesChecker(List<String> responses) {
-        String response = "^[A-Za-z0-9.-? ]{2,255}$";
+        String response = "^[\\p{L}0-9.? -]{2,255}$";
 
         responses.forEach(resp -> {
             if (!resp.matches(response))
-                throw new BodyException("invalid question format or length");
+                throw new BodyException("invalid response format or length =" +resp);
         });
     }
 }

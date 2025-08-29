@@ -28,8 +28,12 @@ public class UserDTOChecker {
         if (!userDTO.password().matches(regex.get("password")))
             throw new BodyException("password characters not match");
 
-        if (userDTO.mobile().isPresent() && !userDTO.mobile().get().matches(regex.get("mobile")))
-            throw new BodyException("mobile characters not match");
+        if (userDTO.mobile().isPresent()) {
+            String mobile = userDTO.mobile().get();
+
+            if (!mobile.isEmpty() && mobile.matches(regex.get("mobile")))
+                throw new BodyException("mobile characters not match");
+        }
 
         if (userDTO.experience() < 0)
             throw new BodyException("experience cannot be negative");

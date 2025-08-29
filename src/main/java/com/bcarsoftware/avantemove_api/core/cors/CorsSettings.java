@@ -19,7 +19,8 @@ public class CorsSettings {
                                 "capacitor://localhost",
                                 "ionic://localhost",
                                 "http://localhost:8080",
-                                "http://localhost:8100"
+                                "http://localhost:8100",
+                                "http://localhost:63343"
                         ).allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
                         .allowedHeaders("*")
                         .allowCredentials(true);

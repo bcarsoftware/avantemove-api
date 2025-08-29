@@ -9,7 +9,7 @@ import com.bcarsoftware.avantemove_api.dtos.UserDTO;
 import com.bcarsoftware.avantemove_api.exceptions.AuthException;
 import com.bcarsoftware.avantemove_api.models.User;
 import com.bcarsoftware.avantemove_api.services.IUserService;
-import com.bcarsoftware.avantemove_api.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/user")
 public class UserController implements IUserController {
-    private final IUserService userService = new UserService();
-    private final JwtInsert jwtInsert = new JwtInsert();
+    @Autowired
+    private IUserService userService;
+    @Autowired
+    private JwtInsert jwtInsert;
 
     @Override
     @PostMapping("")
