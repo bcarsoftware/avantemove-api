@@ -31,7 +31,7 @@ public class UserDTOChecker {
         if (userDTO.mobile().isPresent()) {
             String mobile = userDTO.mobile().get();
 
-            if (!mobile.isEmpty() && mobile.matches(regex.get("mobile")))
+            if (!mobile.isEmpty() && !mobile.matches(regex.get("mobile")))
                 throw new BodyException("mobile characters not match");
         }
 
