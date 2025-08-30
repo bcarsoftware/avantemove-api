@@ -21,9 +21,9 @@ public class RecoveryService implements IRecoveryService {
 
     @Override
     public Recovery save(RecoveryDTO recoveryDTO) {
-        try {
-            Recovery recovery = this.getRecoveryFromDTO(recoveryDTO);
+        Recovery recovery = this.getRecoveryFromDTO(recoveryDTO);
 
+        try {
             return this.recoveryRepository.save(recovery);
         }
         catch (Exception e) {
@@ -117,6 +117,10 @@ public class RecoveryService implements IRecoveryService {
     private Recovery getRecoveryFromDTO(RecoveryDTO recoveryDTO) {
         Recovery recovery = new Recovery();
 
+        User user = this.userRepository.findFirstById(recoveryDTO.userId());
+
+        recovery.setUser(user);
+
         return this.getRecovery(recovery, recoveryDTO);
     }
 
@@ -126,8 +130,9 @@ public class RecoveryService implements IRecoveryService {
 
     private Recovery getRecovery(Recovery recovery, RecoveryDTO recoveryDTO) {
         RecoveryDTOChecker.recoveryDTOChecker(recoveryDTO);
+
         RecoveryDTOChecker.checkUniqueQuestionsAnswers(
-            List.of(recoveryDTO.firstQuestion(), recoveryDTO.secondQuestion(), recovery.getThirdQuestion()),
+            List.of(recoveryDTO.firstQuestion(), recoveryDTO.secondQuestion(), recoveryDTO.thirdQuestion()),
             List.of(recoveryDTO.firstResponse(), recoveryDTO.secondResponse(), recoveryDTO.thirdResponse())
         );
 

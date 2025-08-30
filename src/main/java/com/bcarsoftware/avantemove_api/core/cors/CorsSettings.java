@@ -20,7 +20,7 @@ public class CorsSettings {
                                 "ionic://localhost",
                                 "http://localhost:8080",
                                 "http://localhost:8100",
-                                "http://localhost:63343"
+                                "http://localhost:63342"
                         ).allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
                         .allowedHeaders("*")
                         .allowCredentials(true);
