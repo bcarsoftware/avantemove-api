@@ -16,10 +16,20 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService implements IUserService {
+    private final BCryptPasswordEncoder bcrypt;
+    private final JwtInsert jwtInsert;
+    private final UserRepository userRepository;
+
     @Autowired
-    private JwtInsert jwtInsert;
-    @Autowired
-    private UserRepository userRepository;
+    public UserService(
+        JwtInsert jwtInsert,
+        UserRepository userRepository,
+        BCryptPasswordEncoder bcrypt
+    ) {
+        this.jwtInsert = jwtInsert;
+        this.userRepository = userRepository;
+        this.bcrypt = bcrypt;
+    }
 
     @Override
     public User save(UserDTO userDTO) {
@@ -38,15 +48,13 @@ public class UserService implements IUserService {
 
     @Override
     public User login(LoginDTO loginDTO) {
-        String safePassword = this.encrypt(loginDTO.password());
+        User user = this.userRepository.findUserByUsernameOrEmail(
+            loginDTO.username(),
+            loginDTO.username()
+        ).orElseThrow(() -> new DatabaseException("login failed user not found", 404));
 
-        User user = this.userRepository.makeUserLogin(loginDTO.username(), safePassword);
-
-        if (user == null)
-            throw new DatabaseException(
-                "login failed - username or password invalid",
-                404
-            );
+        if (!this.isPasswordMatched(loginDTO.password(), user.getPassword()))
+            throw new AuthException("login password don't match");
 
         if (user.isActive()) {
             user.setPassword(null);
@@ -76,22 +84,16 @@ public class UserService implements IUserService {
 
     @Override
     public User getById(Long id) {
-        User user = this.userRepository.findUserById(id);
-
-        if (user == null)
-            throw new DatabaseException("user not found", 404);
-
-        return user;
+        return this.userRepository.findById(id)
+                .orElseThrow(() -> new DatabaseException("user not found", 404));
     }
 
     @Override
     public User update(Long id, UserDTO userDTO) {
         UserDTOChecker.userDTOChecker(userDTO);
 
-        User user = this.userRepository.findUserById(id);
-
-        if (user == null)
-            throw new DatabaseException("user not found", 404);
+        User user = this.userRepository.findById(id)
+                .orElseThrow(() -> new DatabaseException("user not found", 404));
 
         user = this.transferDtoToUserUpdateContext(userDTO, user);
 
@@ -107,10 +109,8 @@ public class UserService implements IUserService {
 
     @Override
     public User delete(Long id) {
-        User user = this.userRepository.findUserById(id);
-
-        if (user == null)
-            throw new DatabaseException("user not found", 404);
+        User user = this.userRepository.findById(id)
+                        .orElseThrow(() -> new DatabaseException("user not found", 404));
 
         user.setActive(false);
 
@@ -132,21 +132,18 @@ public class UserService implements IUserService {
     public User getUserByToken(TokenDTO tokenDTO) {
         AccessToken accessToken = jwtInsert.getAccessTokenByToken(tokenDTO.token());
 
-        User user = userRepository.findUserByUsernameOrEmail(
+        return userRepository.findUserByUsernameOrEmail(
             accessToken.getUsername(),
             accessToken.getUsername()
-        );
-
-        if (user == null)
-            throw new DatabaseException("user not found", 404);
-
-        return user;
+        ).orElseThrow(() -> new DatabaseException("user not found", 404));
     }
 
     protected String encrypt(String password) {
-        var bcrypt = new BCryptPasswordEncoder();
-
         return bcrypt.encode(password);
+    }
+
+    protected boolean isPasswordMatched(String password, String encryptedPassword) {
+        return bcrypt.matches(password, encryptedPassword);
     }
 
     protected User transferDtoToUserUpdateContext(UserDTO userDTO, User user) {
