@@ -4,7 +4,6 @@ import com.bcarsoftware.avantemove_api.core.environ.EnvironLoader;
 import com.bcarsoftware.avantemove_api.dtos.AccessTokenDTO;
 import com.bcarsoftware.avantemove_api.exceptions.AuthException;
 import com.bcarsoftware.avantemove_api.models.AccessToken;
-import com.bcarsoftware.avantemove_api.services.AccessTokenService;
 import com.bcarsoftware.avantemove_api.services.IAccessTokenService;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +60,7 @@ public class JwtInsert {
             Jwts.parser()
             .verifyWith(key)
             .build()
-            .parseSignedClaims(token);
+            .parseSignedClaims(result.getToken());
         }
         catch (Exception e) {
             throw new AuthException("user not authorized");
