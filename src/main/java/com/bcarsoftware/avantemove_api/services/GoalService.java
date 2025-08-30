@@ -14,23 +14,20 @@ import java.util.List;
 
 @Service
 public class GoalService implements IGoalService {
+    private final GoalRepository goalRepository;
+    private final UserRepository userRepository;
+
     @Autowired
-    private GoalRepository goalRepository;
-    @Autowired
-    private UserRepository userRepository;
+    public GoalService(GoalRepository goalRepository, UserRepository userRepository) {
+        this.goalRepository = goalRepository;
+        this.userRepository = userRepository;
+    }
 
     @Override
     public Goal save(GoalDTO goalDTO) {
-        try {
-            Goal goal = this.transferGoalDtoTOGoal(goalDTO);
+        Goal goal = this.transferGoalDtoTOGoal(goalDTO);
 
-            return this.goalRepository.save(goal);
-        }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
-
-            throw new DatabaseException("Internal Server Error", 500);
-        }
+        return this.goalRepository.save(goal);
     }
 
     @Override
@@ -52,14 +49,7 @@ public class GoalService implements IGoalService {
 
         goal = this.transferGoalDtoTOGoal(goalDTO, goal);
 
-        try {
-            return this.goalRepository.save(goal);
-        }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
-
-            throw new DatabaseException("Internal Server Error", 500);
-        }
+        return this.goalRepository.save(goal);
     }
 
     @Override
@@ -71,23 +61,12 @@ public class GoalService implements IGoalService {
 
         goal.setActive(false);
 
-        try {
-            return this.goalRepository.save(goal);
-        }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
-
-            throw new DatabaseException("Internal Server Error", 500);
-        }
+        return this.goalRepository.save(goal);
     }
 
     protected User getUserById(Long id) {
-        User user = this.userRepository.findFirstById(id);
-
-        if (user == null)
-            throw new DatabaseException("user not found", 404);
-
-        return user;
+        return this.userRepository.findById(id)
+                .orElseThrow(() -> new DatabaseException("user not found", 404));
     }
 
     protected Goal transferGoalDtoTOGoal(GoalDTO goalDTO) {

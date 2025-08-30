@@ -6,6 +6,7 @@ import com.bcarsoftware.avantemove_api.dtos.BeliefDTO;
 import com.bcarsoftware.avantemove_api.models.Belief;
 import com.bcarsoftware.avantemove_api.services.BeliefService;
 import com.bcarsoftware.avantemove_api.services.IBeliefService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +16,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/belief")
 public class BeliefController implements IBeliefController {
-    private final IBeliefService beliefService = new BeliefService();
-    private final JwtInsert jwtInsert = new JwtInsert();
+    private final IBeliefService beliefService;
+    private final JwtInsert jwtInsert;
+
+    @Autowired
+    public BeliefController(BeliefService beliefService, JwtInsert jwtInsert) {
+        this.beliefService = beliefService;
+        this.jwtInsert = jwtInsert;
+    }
 
     @Override
     @PostMapping("")

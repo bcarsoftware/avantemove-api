@@ -7,14 +7,19 @@ import com.bcarsoftware.avantemove_api.models.AccessToken;
 import com.bcarsoftware.avantemove_api.services.AccessTokenService;
 import com.bcarsoftware.avantemove_api.services.IAccessTokenService;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 import java.util.Date;
 
+@Service
 public class JwtInsert {
-    private final IAccessTokenService accessTokenService = new AccessTokenService();
+    @Autowired
+    private IAccessTokenService accessTokenService;
+
     private final EnvironLoader environ = new EnvironLoader();
 
     private SecretKey getSecretKey() {

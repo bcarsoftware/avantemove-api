@@ -14,23 +14,20 @@ import java.util.List;
 
 @Service
 public class BeliefService implements IBeliefService {
+    private final BeliefRepository beliefRepository;
+    private final UserRepository userRepository;
+
     @Autowired
-    private BeliefRepository beliefRepository;
-    @Autowired
-    private UserRepository userRepository;
+    public BeliefService(BeliefRepository beliefRepository, UserRepository userRepository) {
+        this.beliefRepository = beliefRepository;
+        this.userRepository = userRepository;
+    }
 
     @Override
     public Belief save(BeliefDTO beliefDTO) {
         Belief belief = this.transferBeliefDtoToBelief(beliefDTO);
 
-        try {
-            return this.beliefRepository.save(belief);
-        }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
-
-            throw new DatabaseException("Internal Server Error", 500);
-        }
+        return this.beliefRepository.save(belief);
     }
 
     @Override
@@ -52,14 +49,7 @@ public class BeliefService implements IBeliefService {
 
         Belief beliefData = this.transferBeliefDtoToBelief(beliefDTO, belief);
 
-        try {
-            return this.beliefRepository.save(beliefData);
-        }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
-
-            throw new DatabaseException("Internal Server Error", 500);
-        }
+        return this.beliefRepository.save(beliefData);
     }
 
     @Override
@@ -69,16 +59,9 @@ public class BeliefService implements IBeliefService {
         if (belief == null)
             throw new DatabaseException("belief not found", 404);
 
-        try {
-            this.beliefRepository.delete(belief);
+        this.beliefRepository.delete(belief);
 
-            return belief;
-        }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
-
-            throw new DatabaseException("Internal Server Error", 500);
-        }
+        return belief;
     }
 
     protected Belief transferBeliefDtoToBelief(BeliefDTO beliefDTO) {
@@ -103,11 +86,7 @@ public class BeliefService implements IBeliefService {
     }
 
     private User getUser(Long userId) {
-        User user = this.userRepository.findFirstById(userId);
-
-        if (user == null)
-            throw new DatabaseException("user not found", 404);
-
-        return user;
+        return this.userRepository.findById(userId)
+                .orElseThrow(() -> new DatabaseException("User not found", 404));
     }
 }

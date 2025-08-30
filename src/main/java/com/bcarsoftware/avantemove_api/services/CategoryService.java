@@ -16,10 +16,14 @@ import java.util.List;
 
 @Service
 public class CategoryService implements ICategoryService {
+    private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
+
     @Autowired
-    private CategoryRepository categoryRepository;
-    @Autowired
-    private UserRepository userRepository;
+    public CategoryService(CategoryRepository categoryRepository, UserRepository userRepository) {
+        this.categoryRepository = categoryRepository;
+        this.userRepository = userRepository;
+    }
 
     @Override
     public Category save(CategoryDTO categoryDTO) {
@@ -28,14 +32,7 @@ public class CategoryService implements ICategoryService {
 
         Category category = this.transferCategoryDtoToCategory(categoryDTO);
 
-        try {
-            return this.categoryRepository.save(category);
-        }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
-
-            throw new DatabaseException("Internal Server Error", 500);
-        }
+        return this.categoryRepository.save(category);
     }
 
     @Override
@@ -57,14 +54,7 @@ public class CategoryService implements ICategoryService {
 
         Category categoryData = this.transferCategoryDtoToCategory(categoryDTO, category);
 
-        try {
-            return this.categoryRepository.save(categoryData);
-        }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
-
-            throw new DatabaseException("Internal Server Error", 500);
-        }
+        return this.categoryRepository.save(categoryData);
     }
 
     @Override
@@ -76,14 +66,7 @@ public class CategoryService implements ICategoryService {
 
         category.getCategories().remove(categoryDTO.category());
 
-        try {
-            return this.categoryRepository.save(category);
-        }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
-
-            throw new DatabaseException("Internal Server Error", 500);
-        }
+        return this.categoryRepository.save(category);
     }
 
     protected Category transferCategoryDtoToCategory(CategoryDTO categoryDTO) {
@@ -116,22 +99,11 @@ public class CategoryService implements ICategoryService {
     }
 
     private boolean isUserPresent(Long userId) {
-        try {
-            this.getUser(userId);
-
-            return false;
-        }
-        catch (DatabaseException e) {
-            return true;
-        }
+        return this.userRepository.findById(userId).isPresent();
     }
 
     private User getUser(Long userId) {
-        User user = this.userRepository.findFirstById(userId);
-
-        if (user == null)
-            throw new DatabaseException("user not found", 404);
-
-        return user;
+        return this.userRepository.findById(userId)
+                .orElseThrow(() -> new DatabaseException("user not found", 404));
     }
 }

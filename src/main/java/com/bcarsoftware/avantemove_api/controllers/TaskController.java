@@ -6,7 +6,7 @@ import com.bcarsoftware.avantemove_api.dtos.DateIntervalDTO;
 import com.bcarsoftware.avantemove_api.dtos.TaskDTO;
 import com.bcarsoftware.avantemove_api.models.Task;
 import com.bcarsoftware.avantemove_api.services.ITaskService;
-import com.bcarsoftware.avantemove_api.services.TaskService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +16,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/task")
 public class TaskController implements ITaskController {
-    private final ITaskService taskService = new TaskService();
-    private final JwtInsert jwtInsert = new JwtInsert();
+    private final ITaskService taskService;
+    private final JwtInsert jwtInsert;
+
+    @Autowired
+    public TaskController(ITaskService taskService, JwtInsert jwtInsert) {
+        this.taskService = taskService;
+        this.jwtInsert = jwtInsert;
+    }
 
     @Override
     @PostMapping("")

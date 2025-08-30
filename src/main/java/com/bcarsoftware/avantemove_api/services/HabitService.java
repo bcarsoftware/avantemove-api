@@ -16,25 +16,26 @@ import java.util.List;
 
 @Service
 public class HabitService implements IHabitService{
+    private final HabitRepository habitRepository;
+    private final UserRepository userRepository;
+    private final GoalRepository goalRepository;
+
     @Autowired
-    private HabitRepository habitRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private GoalRepository goalRepository;
+    public HabitService(
+        HabitRepository habitRepository,
+        UserRepository userRepository,
+        GoalRepository goalRepository
+    ) {
+        this.habitRepository = habitRepository;
+        this.userRepository = userRepository;
+        this.goalRepository = goalRepository;
+    }
 
     @Override
     public Habit save(HabitDTO habitDTO) {
         Habit habit = this.transferHabitDtoToHabit(habitDTO);
 
-        try {
-            return this.habitRepository.save(habit);
-        }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
-
-            throw new DatabaseException("Internal Server Error", 500);
-        }
+        return this.habitRepository.save(habit);
     }
 
     @Override
@@ -66,14 +67,7 @@ public class HabitService implements IHabitService{
 
         habit = this.transferHabitDtoToHabit(habitDTO, habit);
 
-        try {
-            return this.habitRepository.save(habit);
-        }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
-
-            throw new DatabaseException("Internal Server Error", 500);
-        }
+        return this.habitRepository.save(habit);
     }
 
     @Override
@@ -85,14 +79,7 @@ public class HabitService implements IHabitService{
 
         habit.setActive(false);
 
-        try {
-            return this.habitRepository.save(habit);
-        }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
-
-            throw new DatabaseException("Internal Server Error", 500);
-        }
+        return this.habitRepository.save(habit);
     }
 
     protected Habit transferHabitDtoToHabit(HabitDTO habitDTO) {
@@ -135,11 +122,7 @@ public class HabitService implements IHabitService{
     }
 
     private User getUserById(Long userId) {
-        User user = this.userRepository.findFirstById(userId);
-
-        if (user == null)
-            throw new DatabaseException("user not found", 404);
-
-        return user;
+        return this.userRepository.findById(userId)
+                .orElseThrow(() -> new DatabaseException("user not found", 404));
     }
 }

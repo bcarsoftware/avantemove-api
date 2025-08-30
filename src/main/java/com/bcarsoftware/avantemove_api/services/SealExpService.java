@@ -13,8 +13,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class SealExpService implements ISealExpService {
+    private final SealExpRepository sealExpRepository;
+
     @Autowired
-    private SealExpRepository sealExpRepository;
+    public SealExpService(SealExpRepository sealExpRepository) {
+        this.sealExpRepository = sealExpRepository;
+    }
 
     @Override
     public SealExp save(SealExpDTO sealExpDTO) {
@@ -31,14 +35,7 @@ public class SealExpService implements ISealExpService {
             sealExp.getStartXp() + sealExpDTO.interval()
         );
 
-        try {
-            return this.sealExpRepository.save(sealExp);
-        }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
-
-            throw new DatabaseException("Internal Server Error", 500);
-        }
+        return this.sealExpRepository.save(sealExp);
     }
 
     @Override
@@ -76,16 +73,9 @@ public class SealExpService implements ISealExpService {
             }).toList();
         }
 
-        try {
-            this.sealExpRepository.saveAll(editSealExps);
+        this.sealExpRepository.saveAll(editSealExps);
 
-            return finalSealExp;
-        }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
-
-            throw new DatabaseException("Internal Server Error", 500);
-        }
+        return finalSealExp;
     }
 
     @Override
@@ -122,17 +112,10 @@ public class SealExpService implements ISealExpService {
             }).toList();
         }
 
-        try {
-            this.sealExpRepository.delete(sealExp);
-            this.sealExpRepository.saveAll(editSealExps);
+        this.sealExpRepository.delete(sealExp);
+        this.sealExpRepository.saveAll(editSealExps);
 
-            return sealExp;
-        }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
-
-            throw new DatabaseException("Internal Server Error", 500);
-        }
+        return sealExp;
     }
 
     protected SealExp transferSealExpDtoToSealExp(SealExpDTO sealExpDTO) {

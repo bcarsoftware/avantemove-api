@@ -4,8 +4,8 @@ import com.bcarsoftware.avantemove_api.core.jwt.JwtInsert;
 import com.bcarsoftware.avantemove_api.core.responses.SuccessResponse;
 import com.bcarsoftware.avantemove_api.dtos.GoalDTO;
 import com.bcarsoftware.avantemove_api.models.Goal;
-import com.bcarsoftware.avantemove_api.services.GoalService;
 import com.bcarsoftware.avantemove_api.services.IGoalService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +15,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/goal")
 public class GoalController implements IGoalController {
-    private final IGoalService goalService = new GoalService();
-    private final JwtInsert jwtInsert = new JwtInsert();
+    private final IGoalService goalService;
+    private final JwtInsert jwtInsert;
+
+    @Autowired
+    public GoalController(IGoalService goalService, JwtInsert jwtInsert) {
+        this.goalService = goalService;
+        this.jwtInsert = jwtInsert;
+    }
 
     @Override
     @PostMapping("")

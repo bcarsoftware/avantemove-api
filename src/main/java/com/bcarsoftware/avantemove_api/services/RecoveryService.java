@@ -14,10 +14,14 @@ import java.util.List;
 
 @Service
 public class RecoveryService implements IRecoveryService {
+    private final UserRepository userRepository;
+    private final RecoveryRepository recoveryRepository;
+
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private RecoveryRepository recoveryRepository;
+    public RecoveryService(UserRepository userRepository, RecoveryRepository recoveryRepository) {
+        this.userRepository = userRepository;
+        this.recoveryRepository = recoveryRepository;
+    }
 
     @Override
     public Recovery save(RecoveryDTO recoveryDTO) {
@@ -35,10 +39,8 @@ public class RecoveryService implements IRecoveryService {
 
     @Override
     public Recovery getRecoveryByUser(String username) {
-        User user = this.userRepository.findUserByUsernameOrEmail(username, username);
-
-        if (user == null)
-            throw new DatabaseException("user not found", 404);
+        User user = this.userRepository.findUserByUsernameOrEmail(username, username)
+                .orElseThrow(() -> new DatabaseException("user not found", 404));
 
         Recovery recovery = this.recoveryRepository.findFirstByUserId(user.getId());
 
@@ -69,10 +71,8 @@ public class RecoveryService implements IRecoveryService {
 
     @Override
     public Recovery updateUserPassword(String username, RecoveryDTO recoveryDTO) {
-        User user = this.userRepository.findUserByUsernameOrEmail(username, username);
-
-        if (user == null)
-            throw new DatabaseException("user not found", 404);
+        User user = this.userRepository.findUserByUsernameOrEmail(username, username)
+                .orElseThrow(() -> new DatabaseException("user not found", 404));
 
         Recovery recovery = this.recoveryRepository.findFirstByUserId(user.getId());
 
@@ -117,7 +117,8 @@ public class RecoveryService implements IRecoveryService {
     private Recovery getRecoveryFromDTO(RecoveryDTO recoveryDTO) {
         Recovery recovery = new Recovery();
 
-        User user = this.userRepository.findFirstById(recoveryDTO.userId());
+        User user = this.userRepository.findById(recoveryDTO.userId())
+                .orElseThrow(() -> new DatabaseException("user not found", 404));
 
         recovery.setUser(user);
 

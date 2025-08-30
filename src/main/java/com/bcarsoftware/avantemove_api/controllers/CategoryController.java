@@ -5,8 +5,8 @@ import com.bcarsoftware.avantemove_api.core.responses.SuccessResponse;
 import com.bcarsoftware.avantemove_api.dtos.CategoryDTO;
 import com.bcarsoftware.avantemove_api.dtos.DeleteCategoryDTO;
 import com.bcarsoftware.avantemove_api.models.Category;
-import com.bcarsoftware.avantemove_api.services.CategoryService;
 import com.bcarsoftware.avantemove_api.services.ICategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +14,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/category")
 public class CategoryController implements ICategoryController {
-    private final ICategoryService categoryService = new CategoryService();
-    private final JwtInsert jwtInsert = new JwtInsert();
+    private final ICategoryService categoryService;
+    private final JwtInsert jwtInsert;
+
+    @Autowired
+    public CategoryController(ICategoryService categoryService, JwtInsert jwtInsert) {
+        this.categoryService = categoryService;
+        this.jwtInsert = jwtInsert;
+    }
 
     @Override
     @PostMapping("")

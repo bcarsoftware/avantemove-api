@@ -4,7 +4,7 @@ import com.bcarsoftware.avantemove_api.core.responses.SuccessResponse;
 import com.bcarsoftware.avantemove_api.dtos.SealExpDTO;
 import com.bcarsoftware.avantemove_api.models.SealExp;
 import com.bcarsoftware.avantemove_api.services.ISealExpService;
-import com.bcarsoftware.avantemove_api.services.SealExpService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/seal-exp")
 public class SealExpController implements ISealExpController {
-    private final ISealExpService sealExpService = new SealExpService();
+    private final ISealExpService sealExpService;
+
+    @Autowired
+    public SealExpController(ISealExpService sealExpService) {
+        this.sealExpService = sealExpService;
+    }
 
     @Override
     @PostMapping("")

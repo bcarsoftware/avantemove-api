@@ -10,8 +10,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AccessTokenService implements IAccessTokenService {
+    private final AccessTokenRepository accessTokenRepository;
+
     @Autowired
-    private AccessTokenRepository accessTokenRepository;
+    public AccessTokenService(AccessTokenRepository accessTokenRepository) {
+        this.accessTokenRepository = accessTokenRepository;
+    }
 
     @Override
     public AccessToken save(AccessTokenDTO accessTokenDTO) {
@@ -24,14 +28,7 @@ public class AccessTokenService implements IAccessTokenService {
         accessToken.setUsername(accessTokenDTO.username());
         accessToken.setToken(accessTokenDTO.token());
 
-        try {
-            return accessTokenRepository.save(accessToken);
-        }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
-
-            throw new AuthException("access token user not authorized");
-        }
+        return accessTokenRepository.save(accessToken);
     }
 
     @Override

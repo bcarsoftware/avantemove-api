@@ -18,12 +18,16 @@ import java.util.List;
 
 @Service
 public class TaskService implements ITaskService {
+    private final TaskRepository taskRepository;
+    private final HabitRepository habitRepository;
+    private final UserRepository userRepository;
+
     @Autowired
-    private TaskRepository taskRepository;
-    @Autowired
-    private HabitRepository habitRepository;
-    @Autowired
-    private UserRepository userRepository;
+    public TaskService(TaskRepository taskRepository, HabitRepository habitRepository, UserRepository userRepository) {
+        this.taskRepository = taskRepository;
+        this.habitRepository = habitRepository;
+        this.userRepository = userRepository;
+    }
 
     private final int EXPERIENCE = 15;
 
@@ -31,14 +35,7 @@ public class TaskService implements ITaskService {
     public Task save(TaskDTO taskDTO) {
         Task task = this.transferTaskDtoToTask(taskDTO);
 
-        try {
-            return this.taskRepository.save(task);
-        }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
-
-            throw new DatabaseException("Internal Server Error", 500);
-        }
+        return this.taskRepository.save(task);
     }
 
     @Override

@@ -17,10 +17,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/user")
 public class UserController implements IUserController {
+    private final IUserService userService;
+    private final JwtInsert jwtInsert;
+
     @Autowired
-    private IUserService userService;
-    @Autowired
-    private JwtInsert jwtInsert;
+    public UserController(IUserService userService, JwtInsert jwtInsert) {
+        this.userService = userService;
+        this.jwtInsert = jwtInsert;
+    }
 
     @Override
     @PostMapping("")

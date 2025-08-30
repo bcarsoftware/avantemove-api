@@ -4,9 +4,8 @@ import com.bcarsoftware.avantemove_api.core.jwt.JwtInsert;
 import com.bcarsoftware.avantemove_api.core.responses.SuccessResponse;
 import com.bcarsoftware.avantemove_api.dtos.HabitDTO;
 import com.bcarsoftware.avantemove_api.models.Habit;
-import com.bcarsoftware.avantemove_api.models.User;
-import com.bcarsoftware.avantemove_api.services.HabitService;
 import com.bcarsoftware.avantemove_api.services.IHabitService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +15,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/habit")
 public class HabitController implements IHabitController{
-    private final IHabitService habitService = new HabitService();
-    private final JwtInsert jwtInsert = new JwtInsert();
+    private final IHabitService habitService;
+    private final JwtInsert jwtInsert;
+
+    @Autowired
+    public HabitController(IHabitService habitService, JwtInsert jwtInsert) {
+        this.habitService = habitService;
+        this.jwtInsert = jwtInsert;
+    }
 
     @Override
     @PostMapping("")

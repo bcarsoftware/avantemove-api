@@ -36,14 +36,7 @@ public class UserService implements IUserService {
         User user = this.transferDtoToUser(userDTO);
         user.setPassword(this.encrypt(user.getPassword()));
 
-        try {
-            return this.userRepository.save(user);
-        }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
-
-            throw new DatabaseException("Internal Server Error", 500);
-        }
+        return this.userRepository.save(user);
     }
 
     @Override
@@ -61,19 +54,12 @@ public class UserService implements IUserService {
             return user;
         }
 
-        try {
-            user.setActive(true);
-            this.userRepository.save(user);
+        user.setActive(true);
+        this.userRepository.save(user);
 
-            user.setPassword(null);
+        user.setPassword(null);
 
-            return user;
-        }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
-
-            throw new DatabaseException("Internal Server Error", 500);
-        }
+        return user;
     }
 
     @Override
@@ -97,14 +83,7 @@ public class UserService implements IUserService {
 
         user = this.transferDtoToUserUpdateContext(userDTO, user);
 
-        try {
-            return this.userRepository.save(user);
-        }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
-
-            throw new DatabaseException("Internal Server Error", 500);
-        }
+        return this.userRepository.save(user);
     }
 
     @Override
@@ -114,18 +93,11 @@ public class UserService implements IUserService {
 
         user.setActive(false);
 
-        try {
-            User deleted = this.userRepository.save(user);
+        User deleted = this.userRepository.save(user);
 
-            deleted.setPassword(null);
+        deleted.setPassword(null);
 
-            return deleted;
-        }
-        catch (Exception e) {
-            System.err.println(e.getMessage());
-
-            throw new DatabaseException("Internal Server Error", 500);
-        }
+        return deleted;
     }
 
     @Override

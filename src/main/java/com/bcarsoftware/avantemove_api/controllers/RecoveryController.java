@@ -13,10 +13,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/recovery")
 public class RecoveryController implements IRecoveryController {
+    private final IRecoveryService recoveryService;
+    private final JwtInsert jwtInsert;
+
     @Autowired
-    private IRecoveryService recoveryService;
-    @Autowired
-    private JwtInsert jwtInsert;
+    public RecoveryController(IRecoveryService recoveryService, JwtInsert jwtInsert) {
+        this.recoveryService = recoveryService;
+        this.jwtInsert = jwtInsert;
+    }
 
     @Override
     @PostMapping("")
