@@ -16,11 +16,9 @@ public class CorsSettings {
                 registry.addMapping("/**")
                         .allowedOrigins(
                                 "http://localhost",
-                                "capacitor://localhost",
-                                "ionic://localhost",
                                 "http://localhost:8080",
-                                "http://localhost:8100",
-                                "http://localhost:63342"
+                                "http://localhost:8081",
+                                "exp://*"
                         ).allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
                         .allowedHeaders("*")
                         .allowCredentials(true);
