@@ -151,6 +151,7 @@ public class UserService implements IUserService {
         user.setEmail(userDTO.email());
         user.setPassword(userDTO.password());
         user.setExperience(userDTO.experience());
+        user.setActive(userDTO.active());
 
         return user;
     }
