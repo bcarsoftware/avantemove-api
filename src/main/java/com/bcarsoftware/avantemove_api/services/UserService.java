@@ -49,15 +49,10 @@ public class UserService implements IUserService {
         if (!this.isPasswordMatched(loginDTO.password(), user.getPassword()))
             throw new AuthException("login password don't match");
 
-        if (user.isActive()) {
-            user.setPassword(null);
-            return user;
+        if (!user.isActive()) {
+            user.setActive(true);
+            this.userRepository.save(user);
         }
-
-        user.setActive(true);
-        this.userRepository.save(user);
-
-        user.setPassword(null);
 
         return user;
     }
