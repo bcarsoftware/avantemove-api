@@ -7,6 +7,7 @@ import com.bcarsoftware.avantemove_api.models.AccessToken;
 import com.bcarsoftware.avantemove_api.repositories.AccessTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AccessTokenService implements IAccessTokenService {
@@ -68,6 +69,7 @@ public class AccessTokenService implements IAccessTokenService {
     }
 
     @Override
+    @Transactional
     public String deleteAccessTokenByToken(AccessTokenDTO accessTokenDTO) {
         AccessTokenDTOChecker.checkTokenLength512(accessTokenDTO);
 
@@ -80,6 +82,7 @@ public class AccessTokenService implements IAccessTokenService {
     }
 
     @Override
+    @Transactional
     public String deleteAccessTokenByUsernameOrEmail(String username, String email) {
         AccessTokenDTO accessUsername = new AccessTokenDTO(username, null);
         AccessTokenDTO accessEmail = new AccessTokenDTO(email, null);

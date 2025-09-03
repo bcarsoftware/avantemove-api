@@ -62,9 +62,7 @@ public class UserController implements IUserController {
 
     @Override
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestParam String token) {
-        this.jwtInsert.verifyToken(token);
-
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String token) {
         SuccessResponse<User> successResponse = new SuccessResponse<>();
 
         this.userService.logout(token);
@@ -80,7 +78,7 @@ public class UserController implements IUserController {
     public ResponseEntity<?> logoutAll(
         @RequestParam String username,
         @RequestParam String email,
-        @RequestParam String token
+        @RequestHeader("Authorization") String token
     ) {
         this.jwtInsert.verifyToken(token);
 
@@ -99,7 +97,7 @@ public class UserController implements IUserController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(
         @PathVariable Long id,
-        @RequestParam String token
+        @RequestHeader("Authorization") String token
     ) {
         this.jwtInsert.verifyToken(token);
 
@@ -116,7 +114,7 @@ public class UserController implements IUserController {
     public ResponseEntity<?> update(
         @PathVariable Long id,
         @RequestBody UserDTO userDTO,
-        @RequestParam String token
+        @RequestHeader("Authorization") String token
     ) {
         this.jwtInsert.verifyToken(token);
 
@@ -132,7 +130,7 @@ public class UserController implements IUserController {
     @DeleteMapping("/{id}/delete")
     public ResponseEntity<?> delete(
         @PathVariable Long id,
-        @RequestParam String token
+        @RequestHeader("Authorization") String token
     ) {
         this.jwtInsert.verifyToken(token);
 
