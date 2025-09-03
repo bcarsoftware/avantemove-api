@@ -19,7 +19,8 @@ public class JwtInsert {
     @Autowired
     private IAccessTokenService accessTokenService;
 
-    private final EnvironLoader environ = new EnvironLoader();
+    @Autowired
+    private EnvironLoader environ;
 
     private SecretKey getSecretKey() {
         String keyString = environ.getSecret();

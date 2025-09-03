@@ -44,7 +44,7 @@ public class UserController implements IUserController {
 
         User logged = this.userService.login(loginDTO);
 
-        String token = jwtInsert.createToken(
+        String token = this.jwtInsert.createToken(
             logged.getId(),
             loginDTO.username(),
             "user"

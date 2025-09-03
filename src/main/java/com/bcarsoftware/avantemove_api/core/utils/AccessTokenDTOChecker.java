@@ -24,7 +24,11 @@ public class AccessTokenDTOChecker {
 
     public static void accessTokenDTOChecker(AccessTokenDTO accessTokenDTO) {
         checkTokenLength512(accessTokenDTO);
-        checkUsernameAccessToken(accessTokenDTO);
-        checkEmailAccessToken(accessTokenDTO);
+
+        if (accessTokenDTO.username().contains("@")) {
+            checkEmailAccessToken(accessTokenDTO);
+        } else {
+            checkUsernameAccessToken(accessTokenDTO);
+        }
     }
 }
