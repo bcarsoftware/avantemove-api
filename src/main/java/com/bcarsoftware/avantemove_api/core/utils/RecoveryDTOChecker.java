@@ -20,6 +20,27 @@ public class RecoveryDTOChecker {
         checkUniqueAnswers(recoveryDTO);
     }
 
+    public static void checkOriginalNewerRecoveryPassword(
+        RecoveryDTO originalDTO,
+        RecoveryDTO recoveryDTO
+    ) {
+        recoveryDTOChecker(recoveryDTO);
+
+        List<String> originalQuestions = getQuestions(recoveryDTO);
+        List<String> recoveryQuestions = getQuestions(originalDTO);
+        List<String> originalResponses = getResponses(recoveryDTO);
+        List<String> recoveryResponses = getResponses(originalDTO);
+
+        int length = originalQuestions.size();
+
+        for (int i = 0; i < length; i++) {
+            if (!originalQuestions.get(i).equals(recoveryQuestions.get(i)))
+                throw new BodyException("questions don't match");
+            if (!originalResponses.get(i).equals(recoveryResponses.get(i)))
+                throw new BodyException("answers don't match");
+        }
+    }
+
     // Private Methods */
 
     private static void checkUniqueQuestions(RecoveryDTO recoveryDTO) {

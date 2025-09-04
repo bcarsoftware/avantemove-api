@@ -77,6 +77,8 @@ public class RecoveryService implements IRecoveryService {
         if (recovery == null)
             throw new DatabaseException("recovery data not found", 404);
 
+        RecoveryDTO originalDTO = this.transferRecoveryToDTO(recovery);
+        RecoveryDTOChecker.checkOriginalNewerRecoveryPassword(originalDTO, recoveryDTO);
         this.getRecoveryFromDTO(recovery, recoveryDTO);
 
         try {
@@ -121,5 +123,18 @@ public class RecoveryService implements IRecoveryService {
         recovery.setFirstResponse(recoveryDTO.firstResponse());
         recovery.setSecondResponse(recoveryDTO.secondResponse());
         recovery.setThirdResponse(recoveryDTO.thirdResponse());
+    }
+
+    private RecoveryDTO transferRecoveryToDTO(Recovery recovery) {
+        return new RecoveryDTO(
+            recovery.getUser().getId(),
+            "password123",
+            recovery.getFirstQuestion(),
+            recovery.getSecondQuestion(),
+            recovery.getThirdQuestion(),
+            recovery.getFirstResponse(),
+            recovery.getSecondResponse(),
+            recovery.getThirdResponse()
+        );
     }
 }
