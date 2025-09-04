@@ -34,9 +34,9 @@ public class RecoveryDTOChecker {
         int length = originalQuestions.size();
 
         for (int i = 0; i < length; i++) {
-            if (!originalQuestions.get(i).equals(recoveryQuestions.get(i)))
+            if (!originalQuestions.get(i).equalsIgnoreCase(recoveryQuestions.get(i)))
                 throw new BodyException("questions don't match");
-            if (!originalResponses.get(i).equals(recoveryResponses.get(i)))
+            if (!originalResponses.get(i).equalsIgnoreCase(recoveryResponses.get(i)))
                 throw new BodyException("answers don't match");
         }
     }

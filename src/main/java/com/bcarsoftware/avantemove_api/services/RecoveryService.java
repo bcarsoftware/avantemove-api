@@ -8,17 +8,24 @@ import com.bcarsoftware.avantemove_api.models.User;
 import com.bcarsoftware.avantemove_api.repositories.RecoveryRepository;
 import com.bcarsoftware.avantemove_api.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RecoveryService implements IRecoveryService {
     private final UserRepository userRepository;
     private final RecoveryRepository recoveryRepository;
+    private final BCryptPasswordEncoder bcrypt;
 
     @Autowired
-    public RecoveryService(UserRepository userRepository, RecoveryRepository recoveryRepository) {
+    public RecoveryService(
+        UserRepository userRepository,
+        RecoveryRepository recoveryRepository,
+        BCryptPasswordEncoder bcrypt
+    ) {
         this.userRepository = userRepository;
         this.recoveryRepository = recoveryRepository;
+        this.bcrypt = bcrypt;
     }
 
     @Override
@@ -80,9 +87,10 @@ public class RecoveryService implements IRecoveryService {
         RecoveryDTO originalDTO = this.transferRecoveryToDTO(recovery);
         RecoveryDTOChecker.checkOriginalNewerRecoveryPassword(originalDTO, recoveryDTO);
         this.getRecoveryFromDTO(recovery, recoveryDTO);
+        String safePassword = this.encrypt(recoveryDTO.newPassword());
 
         try {
-            user.setPassword(recoveryDTO.newPassword());
+            user.setPassword(safePassword);
 
             this.userRepository.save(user);
 
@@ -136,5 +144,9 @@ public class RecoveryService implements IRecoveryService {
             recovery.getSecondResponse(),
             recovery.getThirdResponse()
         );
+    }
+
+    private String encrypt(String password) {
+        return this.bcrypt.encode(password);
     }
 }
