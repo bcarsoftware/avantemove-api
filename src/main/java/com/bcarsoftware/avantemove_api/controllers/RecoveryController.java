@@ -71,6 +71,9 @@ public class RecoveryController implements IRecoveryController {
     ) {
         SuccessResponse<Recovery> successResponse = new SuccessResponse<>();
 
+        Recovery recovery = this.recoveryService.updateUserPassword(username, recoveryDTO);
+
+        successResponse.setData(recovery);
         successResponse.setCode(200);
 
         return ResponseEntity.status(HttpStatus.OK).body(successResponse);

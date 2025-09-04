@@ -6,7 +6,7 @@ import com.bcarsoftware.avantemove_api.models.Recovery;
 public interface IRecoveryService {
     Recovery save(RecoveryDTO recoveryDTO);
     Recovery getRecoveryByUser(String username);
-    Recovery update(Long id, RecoveryDTO recoveryDTO);
+    Recovery update(Long userId, RecoveryDTO recoveryDTO);
     Recovery updateUserPassword(
         String username,
         RecoveryDTO recoveryDTO

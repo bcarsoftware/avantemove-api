@@ -10,8 +10,6 @@ import com.bcarsoftware.avantemove_api.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class RecoveryService implements IRecoveryService {
     private final UserRepository userRepository;
@@ -51,16 +49,16 @@ public class RecoveryService implements IRecoveryService {
     }
 
     @Override
-    public Recovery update(Long id, RecoveryDTO recoveryDTO) {
-        Recovery data = this.recoveryRepository.findFirstByUserId(id);
+    public Recovery update(Long userId, RecoveryDTO recoveryDTO) {
+        Recovery data = this.recoveryRepository.findFirstByUserId(userId);
 
         if (data == null)
             throw new DatabaseException("recovery not found", 404);
 
-        Recovery recovery = this.getRecoveryFromDTO(data, recoveryDTO);
+        this.getRecoveryFromDTO(data, recoveryDTO);
 
         try {
-            return this.recoveryRepository.save(recovery);
+            return this.recoveryRepository.save(data);
         }
         catch (Exception e) {
             System.err.println(e.getMessage());
@@ -79,26 +77,7 @@ public class RecoveryService implements IRecoveryService {
         if (recovery == null)
             throw new DatabaseException("recovery data not found", 404);
 
-        List<String> originalQuestions = List.of(
-            recovery.getFirstQuestion(), recovery.getSecondQuestion(), recovery.getThirdQuestion()
-        );
-
-        List<String> recoveryQuestions = List.of(
-            recoveryDTO.firstQuestion(), recoveryDTO.secondQuestion(), recoveryDTO.thirdQuestion()
-        );
-
-        List<String> originalResponses = List.of(
-            recovery.getFirstResponse(), recovery.getSecondResponse(), recovery.getThirdResponse()
-        );
-
-        List<String> recoveryResponses = List.of(
-            recoveryDTO.firstResponse(), recoveryDTO.secondResponse(), recoveryDTO.thirdResponse()
-        );
-
-        RecoveryDTOChecker.checkContentQuestionsResponses(
-            originalQuestions, recoveryQuestions,
-            originalResponses, recoveryResponses
-        );
+        this.getRecoveryFromDTO(recovery, recoveryDTO);
 
         try {
             user.setPassword(recoveryDTO.newPassword());
@@ -115,6 +94,8 @@ public class RecoveryService implements IRecoveryService {
     }
 
     private Recovery getRecoveryFromDTO(RecoveryDTO recoveryDTO) {
+        RecoveryDTOChecker.checkUniqueQuestionsAnswers(recoveryDTO);
+
         Recovery recovery = new Recovery();
 
         User user = this.userRepository.findById(recoveryDTO.userId())
@@ -122,21 +103,17 @@ public class RecoveryService implements IRecoveryService {
 
         recovery.setUser(user);
 
-        return this.getRecovery(recovery, recoveryDTO);
+        this.getRecovery(recovery, recoveryDTO);
+
+        return recovery;
     }
 
-    private Recovery getRecoveryFromDTO(Recovery recovery, RecoveryDTO recoveryDTO) {
-        return this.getRecovery(recovery, recoveryDTO);
-    }
-
-    private Recovery getRecovery(Recovery recovery, RecoveryDTO recoveryDTO) {
+    private void getRecoveryFromDTO(Recovery recovery, RecoveryDTO recoveryDTO) {
         RecoveryDTOChecker.recoveryDTOChecker(recoveryDTO);
+        this.getRecovery(recovery, recoveryDTO);
+    }
 
-        RecoveryDTOChecker.checkUniqueQuestionsAnswers(
-            List.of(recoveryDTO.firstQuestion(), recoveryDTO.secondQuestion(), recoveryDTO.thirdQuestion()),
-            List.of(recoveryDTO.firstResponse(), recoveryDTO.secondResponse(), recoveryDTO.thirdResponse())
-        );
-
+    private void getRecovery(Recovery recovery, RecoveryDTO recoveryDTO) {
         recovery.setFirstQuestion(recoveryDTO.firstQuestion());
         recovery.setSecondQuestion(recoveryDTO.secondQuestion());
         recovery.setThirdQuestion(recoveryDTO.thirdQuestion());
@@ -144,7 +121,5 @@ public class RecoveryService implements IRecoveryService {
         recovery.setFirstResponse(recoveryDTO.firstResponse());
         recovery.setSecondResponse(recoveryDTO.secondResponse());
         recovery.setThirdResponse(recoveryDTO.thirdResponse());
-
-        return recovery;
     }
 }

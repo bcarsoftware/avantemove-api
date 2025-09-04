@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RecoveryRepository extends JpaRepository<Recovery, Long> {
-    Recovery findFirstByUserId(Long id);
+    Recovery findFirstByUserId(Long userId);
 }
