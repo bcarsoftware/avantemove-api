@@ -46,7 +46,7 @@ public class RecoveryController implements IRecoveryController {
     }
 
     @Override
-    @PatchMapping("/{userId}/user")
+    @PatchMapping("/{userId}/user/edit")
     public ResponseEntity<?> update(
         @RequestParam String token,
         @PathVariable Long userId,
