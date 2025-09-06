@@ -135,7 +135,11 @@ public class UserService implements IUserService {
         String mobile = userDTO.mobile().isPresent() ? userDTO.mobile().get() : null;
 
         user.setMobile(mobile);
-        user.setExperience(userDTO.experience());
+        user.setExperience(
+            userDTO.experience() == 0 ?
+            user.getExperience() :
+            userDTO.experience()
+        );
     }
 
     protected User transferDtoToUser(UserDTO userDTO) {
