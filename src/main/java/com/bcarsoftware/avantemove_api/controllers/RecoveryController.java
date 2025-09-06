@@ -48,7 +48,7 @@ public class RecoveryController implements IRecoveryController {
     @Override
     @PatchMapping("/{userId}/user/edit")
     public ResponseEntity<?> update(
-        @RequestParam String token,
+        @RequestHeader("Authorization") String token,
         @PathVariable Long userId,
         @RequestBody RecoveryDTO recoveryDTO
     ) {
