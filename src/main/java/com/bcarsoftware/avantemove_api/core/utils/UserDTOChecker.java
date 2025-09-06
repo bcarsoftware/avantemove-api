@@ -7,6 +7,15 @@ import com.bcarsoftware.avantemove_api.exceptions.BodyException;
 import java.util.*;
 
 public class UserDTOChecker {
+    public static boolean isSavingPassword(String password) {
+        return password.equalsIgnoreCase("NOT_SAVE_PASSWORD");
+    }
+
+    public static void checkSavePassword(String password) {
+        boolean check = isSavingPassword(password);
+        if (check) throw new BodyException("invalid password sent to save");
+    }
+
     public static void userDTOChecker(UserDTO userDTO) {
         Map<String, String> regex = regexes();
 

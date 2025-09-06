@@ -13,6 +13,7 @@ import com.bcarsoftware.avantemove_api.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService implements IUserService {
@@ -70,13 +71,22 @@ public class UserService implements IUserService {
     }
 
     @Override
+    @Transactional
     public User update(Long id, UserDTO userDTO) {
         UserDTOChecker.userDTOChecker(userDTO);
 
         User user = this.userRepository.findById(id)
                 .orElseThrow(() -> new DatabaseException("user not found", 404));
 
-        user = this.transferDtoToUserUpdateContext(userDTO, user);
+        this.transferDtoToUserUpdateContext(userDTO, user);
+
+        boolean isSavePassword = UserDTOChecker.isSavingPassword(userDTO.password());
+
+        user.setPassword(
+            isSavePassword ?
+            this.encrypt(userDTO.password()) :
+            user.getPassword()
+        );
 
         return this.userRepository.save(user);
     }
@@ -113,7 +123,7 @@ public class UserService implements IUserService {
         return bcrypt.matches(password, encryptedPassword);
     }
 
-    protected User transferDtoToUserUpdateContext(UserDTO userDTO, User user) {
+    protected void transferDtoToUserUpdateContext(UserDTO userDTO, User user) {
         user.setFirstName(userDTO.firstName());
         user.setLastName(userDTO.lastName());
         user.setBirthDate(userDTO.birthDate());
@@ -126,11 +136,10 @@ public class UserService implements IUserService {
 
         user.setMobile(mobile);
         user.setExperience(userDTO.experience());
-
-        return user;
     }
 
     protected User transferDtoToUser(UserDTO userDTO) {
+        UserDTOChecker.checkSavePassword(userDTO.password());
         UserDTOChecker.userDTOChecker(userDTO);
 
         User user = new User();
